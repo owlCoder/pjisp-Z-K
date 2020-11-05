@@ -27,18 +27,25 @@ void upisiUkupneCene(FILE *, int);
 
 int main(int argc, char **argm)
 {
-    FILE *datoteka = otvoriDatoteku(argm[2], "r");
-    FILE *upis = otvoriDatoteku(argm[3], "w");
-	
-    int mesecno_poruka = atoi(argm[1]), i = ucitajPodatkePaketa(datoteka);
-	
-	calcUkupnaCenaPaketa(i, mesecno_poruka);
-	upisiUkupneCene(upis, i);
-	// debugReadFile(i); // debugging purpose
-    fclose(datoteka);
-    fclose(upis);
+    if(argc != 4)
+    { 
+		printf("USAGE: %s MESECNO_PORUKA IN_FILENAME OUT_FILENAME\n", argm[0]);
+		exit(42);       
+    }
+    else {
+	    FILE *datoteka = otvoriDatoteku(argm[2], "r");
+	    FILE *upis = otvoriDatoteku(argm[3], "w");
 
-    return 0;
+	    int mesecno_poruka = atoi(argm[1]), i = ucitajPodatkePaketa(datoteka);
+
+		calcUkupnaCenaPaketa(i, mesecno_poruka);
+		upisiUkupneCene(upis, i);
+		// debugReadFile(i); // debugging purpose
+	    fclose(datoteka);
+	    fclose(upis);
+
+	    return 0;
+    }
 }
 
 FILE *otvoriDatoteku(char *naziv, char *rezim) {
