@@ -37,9 +37,9 @@ int main(int argc, char **argm)
         int i = ucitajPodatke(datoteka);
         double akciza = atof(argm[1]);
 
-        if(akciza == 0)
+        if(akciza <= 0)
         {
-            printf("\nAkciza ne može biti negativan broj!\n");
+            printf("\nAkciza ne moÅ¾e biti negativan broj!\n");
             exit(42);
         }
         else {
