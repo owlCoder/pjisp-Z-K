@@ -62,7 +62,7 @@ int ucitajPodatke(FILE *datoteka)
 {
 	int i = 0;
 	rewind(datoteka);
-    while( (fscanf(datoteka, "%s %lf %lf %d",
+    while( (fscanf(datoteka, "%s %lf %lf %u",
                &serije[i].naziv,
                &serije[i].IMDBOcena,
                &serije[i].maxZabelGledanost,

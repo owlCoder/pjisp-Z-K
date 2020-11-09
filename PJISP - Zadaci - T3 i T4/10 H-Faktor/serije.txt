@@ -1,5 +1,5 @@
-58.53 SlickAndSmorty
-62.86 EastWorld
-15.74 GameOfPhones
-172.22 VentureSisters
-218.52 EvangerionNoYakusoku
+SlickAndSmorty        9.3   2.86  18
+EastWorld             8.8   2.24  16
+GameOfPhones          9.5  12.07  20
+VentureSisters        8.5   1.53  31
+EvangerionNoYakusoku  8.0   2.16  59
