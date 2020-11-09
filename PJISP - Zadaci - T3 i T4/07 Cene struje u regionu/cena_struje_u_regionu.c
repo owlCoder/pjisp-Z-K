@@ -36,7 +36,7 @@ int main(int argc, char **argm)
         FILE *upis = otvoriDatoteku(argm[3], "w");
 
         int i = ucitajPodatke(datoteka);
-        int potrosenoKWh = atof(argm[1]);
+        int potrosenoKWh = atoi(argm[1]);
 
         ukupnaCena(i, potrosenoKWh);
         upisiIzvestaj(upis, i);
