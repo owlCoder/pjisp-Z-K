@@ -4,17 +4,15 @@
 
 #define MAX_NIZ 100
 
-struct serija_st {
-    char naziv[30 + 1];
-    double IMDBOcena;
-    double maxZabelGledanost;
-    unsigned maxBrMeseciIzmedjuDveSezone;
-} serije[MAX_NIZ];
+struct st1_st {
+    tip par1; 
+	...
+} nazProm[MAX_NIZ];
 
-struct hype_st {
-    char naziv[30 + 1];
-    double hypeFaktor;
-} hype[MAX_NIZ];
+struct st2_st {
+      tip par1; 
+	...
+} nazProm2[MAX_NIZ];
 
 FILE *otvoriDatoteku(char *, char *);
 int ucitajPodatke(FILE *);
