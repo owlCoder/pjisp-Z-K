@@ -1,0 +1,11 @@
+Proizvođač je prilikom razvoja svog novog modela CCD foto-senzora napravio propust koji dovodi do „preslušavanja” između plavog i crvenog kanala slike, zapisane u 24-bit RGB kolor formatu. Pošto je ovaj problem uočen tek u kasnoj fazi razvoja, odlučeno je da će se ipak nastaviti proizvodnja novog modela senzora, uz PR kampanju „It’s not a bug; it’s an undocumented feature!”
+
+Nezavisno od njih proizvođač profesionalnih fotoaparata sproveo je opsežno marketinško istraživanje o novom senzoru i njegovoj nadrealnoj živosti boja, ali ni uz silan uložen trud (i lobiranje) nažalost nije naišao na razumevanje udruženja modnih fotografa.
+
+Stoga je proizvođač fotoaparata svojim inženjerima dao zadatak da softverski koriguju plavi kanal slike, primenom XOR bitwise operatora nad plavim i crvenim kanalom.
+
+Primer poziva programa:
+
+./fix-colors cat-weird.bmp cat-fixed.bmp
+
+sa zadatim ulazom u datoteci cat-weird.bmp:
