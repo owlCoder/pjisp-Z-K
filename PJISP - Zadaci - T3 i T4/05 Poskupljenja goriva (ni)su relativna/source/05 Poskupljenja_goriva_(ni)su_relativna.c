@@ -8,19 +8,19 @@ struct gorivo_st {
     char oznakaGrada[2 + 1];
     char tipGoriva[10 + 1];
     double cenaGoriva;
-} goriva[MAX_NIZ];
+};
 
 struct analiza_st {
     double novaCenaGoriva;
     double procUvecanjaCeneGoriva;
     char oznakaGrada[2 + 1];
     char tipGoriva[10 + 1];
-} analize[MAX_NIZ];
+};
 
 FILE *otvoriDatoteku(char *, char *);
-int ucitajPodatke(FILE *);
-void analizaSaAkcizom(int, double);
-void upisiIzvestaj(FILE *, int);
+int ucitajPodatke(FILE *, struct gorivo_st[]);
+void analizaSaAkcizom(int, double, struct gorivo_st[], struct analiza_st[]);
+void upisiIzvestaj(FILE *, int, struct analiza_st[]);
 
 int main(int argc, char **argm)
 {
@@ -34,7 +34,10 @@ int main(int argc, char **argm)
         FILE *datoteka = otvoriDatoteku(argm[2], "r");
         FILE *upis = otvoriDatoteku(argm[3], "w");
 
-        int i = ucitajPodatke(datoteka);
+        struct gorivo_st goriva[MAX_NIZ];
+        struct analiza_st  analize[MAX_NIZ];
+
+        int i = ucitajPodatke(datoteka, goriva);
         double akciza = atof(argm[1]);
 
         if(akciza <= 0)
@@ -43,8 +46,8 @@ int main(int argc, char **argm)
             exit(42);
         }
         else {
-            analizaSaAkcizom(i, akciza);
-            upisiIzvestaj(upis, i);
+            analizaSaAkcizom(i, akciza, goriva, analize);
+            upisiIzvestaj(upis, i, analize);
 
             fclose(datoteka);
             fclose(upis);
@@ -67,7 +70,7 @@ FILE *otvoriDatoteku(char *naziv, char *rezim) {
         return datoteka;
 }
 
-int ucitajPodatke(FILE *datoteka)
+int ucitajPodatke(FILE *datoteka, struct gorivo_st goriva[])
 {
 	int i = 0;
 	rewind(datoteka);
@@ -80,7 +83,7 @@ int ucitajPodatke(FILE *datoteka)
 	return i;
 }
 
-void analizaSaAkcizom(int i, double akciza)
+void analizaSaAkcizom(int i, double akciza, struct gorivo_st goriva[], struct analiza_st analize[])
 {
     int j;
 	for(j = 0; j < i; j++)
@@ -98,7 +101,7 @@ void analizaSaAkcizom(int i, double akciza)
 	}
 }
 
-void upisiIzvestaj(FILE *upis, int i)
+void upisiIzvestaj(FILE *upis, int i, struct analiza_st analize[])
 {
 	int j;
 	for(j = 0; j < i; j++)
