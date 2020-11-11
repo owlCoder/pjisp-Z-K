@@ -68,7 +68,7 @@ int ucitajPodatke(FILE *datoteka, struct artikal_st artikli[])
                &artikli[i].cena,
                &artikli[i].brojProdatihArtikala,
                &artikli[i].trgovackaMarza,
-               &artikli[i].naziv)) != EOF) {
+                artikli[i].naziv)) != EOF) {
         i++;
     }
 	return i;
