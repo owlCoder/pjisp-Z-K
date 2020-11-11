@@ -9,19 +9,19 @@ struct pacijent_st {
     char prezime[20 + 1];
     int masa;
     double visinaM;
-} pacijenti[MAX_NIZ];
+};
 
 struct analiza_st {
     char ime[20 + 1];
     char prezime[20 + 1];
     double BMI;
     char *dijagnoza;
-} analize[MAX_NIZ];
+};
 
 FILE *otvoriDatoteku(char *, char *);
-int ucitajPodatke(FILE *);
-void calcBMI(int);
-void upisiIzvestaj(FILE *, int);
+int ucitajPodatke(FILE *, struct pacijent_st []);
+void calcBMI(int, struct pacijent_st [], struct analiza_st []);
+void upisiIzvestaj(FILE *, int, struct analiza_st []);
 
 int main(int argc, char **argm)
 {
@@ -35,10 +35,13 @@ int main(int argc, char **argm)
         FILE *datoteka = otvoriDatoteku(argm[1], "r");
         FILE *upis = otvoriDatoteku(argm[2], "w");
 
-        int i = ucitajPodatke(datoteka);
+        struct pacijent_st pacijenti[MAX_NIZ];
+        struct analiza_st analize[MAX_NIZ];
 
-        calcBMI(i);
-        upisiIzvestaj(upis, i);
+        int i = ucitajPodatke(datoteka, pacijenti);
+
+        calcBMI(i, pacijenti, analize);
+        upisiIzvestaj(upis, i, analize);
 
         fclose(datoteka);
         fclose(upis);
@@ -60,7 +63,7 @@ FILE *otvoriDatoteku(char *naziv, char *rezim) {
         return datoteka;
 }
 
-int ucitajPodatke(FILE *datoteka)
+int ucitajPodatke(FILE *datoteka, struct pacijent_st pacijenti[])
 {
 	int i = 0;
 	rewind(datoteka);
@@ -74,7 +77,7 @@ int ucitajPodatke(FILE *datoteka)
 	return i;
 }
 
-void calcBMI(int i)
+void calcBMI(int i, struct pacijent_st pacijenti[], struct analiza_st analize[])
 {
     int j;
 	for(j = 0; j < i; j++)
@@ -90,20 +93,20 @@ void calcBMI(int i)
             analize[j].dijagnoza = "Pothranjenost";
         }
         else if(analize[j].BMI >= 18.5 && analize[j].BMI < 25.0) {
-            analize[j].dijagnoza = "Idealna težina";
+            analize[j].dijagnoza = "Idealna tezina";
         }
         else if(analize[j].BMI >= 25.0 && analize[j].BMI < 30.0) {
-            analize[j].dijagnoza = "Prekomerna težina";
+            analize[j].dijagnoza = "Prekomerna tezina";
         }
         else if(analize[j].BMI >= 30.0) {
             analize[j].dijagnoza = "Gojaznost";
         }
         else
-            analize[i].dijagnoza = "\nUneta težina nije u opsegu prirodnih brojeva!\n";
+            analize[i].dijagnoza = "\nUneta tezina nije u opsegu prirodnih brojeva!\n";
 	}
 }
 
-void upisiIzvestaj(FILE *upis, int i)
+void upisiIzvestaj(FILE *upis, int i, struct analiza_st analize[])
 {
 	int j;
 	for(j = 0; j < i; j++)
