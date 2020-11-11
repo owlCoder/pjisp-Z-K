@@ -65,8 +65,8 @@ int ucitajPodatke(FILE *datoteka)
 	int i = 0;
 	rewind(datoteka);
     while( (fscanf(datoteka, "%s %s %lf %lf %lf",
-               &pacijenti[i].ime,
-               &pacijenti[i].prezime,
+                pacijenti[i].ime,
+                pacijenti[i].prezime,
                &pacijenti[i].holesterol,
                &pacijenti[i].pritisak,
                &pacijenti[i].secer)) != EOF) {
