@@ -9,17 +9,17 @@ struct artikal_st {
     int brojProdatihArtikala;
     double trgovackaMarza;
     char naziv[20 + 1];
-} artikli[MAX_NIZ];
+};
 
 struct zarada_st {
     char naziv[20 + 1];
     double ostvarenaZarada;
-} analizaZarade[MAX_NIZ];
+};
 
 FILE *otvoriDatoteku(char *, char *);
-int ucitajPodatke(FILE *);
-void zarada(int);
-void upisiIzvestaj(FILE *, int);
+int ucitajPodatke(FILE *, struct artikal_st[]);
+void zarada(int, struct artikal_st[], struct zarada_st[]);
+void upisiIzvestaj(FILE *, int, struct zarada_st[]);
 
 int main(int argc, char **argm)
 {
@@ -29,14 +29,16 @@ int main(int argc, char **argm)
 		exit(42);
     }
     else {
-
         FILE *datoteka = otvoriDatoteku(argm[1], "r");
         FILE *upis = otvoriDatoteku(argm[2], "w");
 
-        int i = ucitajPodatke(datoteka);
+        struct artikal_st artikli[MAX_NIZ];
+        struct zarada_st analizaZarade[MAX_NIZ];
 
-        zarada(i);
-        upisiIzvestaj(upis, i);
+        int i = ucitajPodatke(datoteka, artikli);
+
+        zarada(i, artikli, analizaZarade);
+        upisiIzvestaj(upis, i, analizaZarade);
 
         fclose(datoteka);
         fclose(upis);
@@ -58,7 +60,7 @@ FILE *otvoriDatoteku(char *naziv, char *rezim) {
         return datoteka;
 }
 
-int ucitajPodatke(FILE *datoteka)
+int ucitajPodatke(FILE *datoteka, struct artikal_st artikli[])
 {
 	int i = 0;
 	rewind(datoteka);
@@ -72,7 +74,7 @@ int ucitajPodatke(FILE *datoteka)
 	return i;
 }
 
-void zarada(int i)
+void zarada(int i, struct artikal_st artikli[], struct zarada_st analizaZarade[])
 {
     int j;
 	for(j = 0; j < i; j++)
@@ -86,7 +88,7 @@ void zarada(int i)
 	}
 }
 
-void upisiIzvestaj(FILE *upis, int i)
+void upisiIzvestaj(FILE *upis, int i, struct zarada_st analizaZarade[])
 {
 	int j;
 	for(j = 0; j < i; j++)
