@@ -75,8 +75,8 @@ int ucitajPodatke(FILE *datoteka, struct gorivo_st goriva[])
 	int i = 0;
 	rewind(datoteka);
     while( (fscanf(datoteka, "%s %s %lf",
-               &goriva[i].oznakaGrada,
-               &goriva[i].tipGoriva,
+                goriva[i].oznakaGrada,
+                goriva[i].tipGoriva,
                &goriva[i].cenaGoriva)) != EOF) {
         i++;
     }
