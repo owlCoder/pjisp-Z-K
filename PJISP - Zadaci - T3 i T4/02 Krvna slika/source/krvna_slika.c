@@ -10,18 +10,18 @@ struct pacijent_st {
     double holesterol;
     double pritisak;
     double secer;
-} pacijenti[MAX_NIZ];
+};
 
 struct analiza_st {
     char upozorenje[2];
     char ime[20 + 1];
     char prezime[20 + 1];
-} analize[MAX_NIZ];
+};
 
 FILE *otvoriDatoteku(char *, char *);
-int ucitajPodatke(FILE *);
-void calcPrSeHo(int, char *);
-void upisiIzvestaj(FILE *, int);
+int ucitajPodatke(FILE *, struct pacijent_st []);
+void calcPrSeHo(int, char *, struct pacijent_st [], struct analiza_st []);
+void upisiIzvestaj(FILE *, int, struct analiza_st []);
 
 int main(int argc, char **argm)
 {
@@ -35,10 +35,13 @@ int main(int argc, char **argm)
         FILE *datoteka = otvoriDatoteku(argm[2], "r");
         FILE *upis = otvoriDatoteku(argm[3], "w");
 
-        int i = ucitajPodatke(datoteka);
+        struct pacijent_st pacijenti[MAX_NIZ];
+        struct analiza_st analize[MAX_NIZ];
 
-        calcPrSeHo(i, argm[1]);
-        upisiIzvestaj(upis, i);
+        int i = ucitajPodatke(datoteka, pacijenti);
+
+        calcPrSeHo(i, argm[1], pacijenti, analize);
+        upisiIzvestaj(upis, i, analize);
 
         fclose(datoteka);
         fclose(upis);
@@ -60,7 +63,7 @@ FILE *otvoriDatoteku(char *naziv, char *rezim) {
         return datoteka;
 }
 
-int ucitajPodatke(FILE *datoteka)
+int ucitajPodatke(FILE *datoteka, struct pacijent_st pacijenti[])
 {
 	int i = 0;
 	rewind(datoteka);
@@ -75,7 +78,7 @@ int ucitajPodatke(FILE *datoteka)
 	return i;
 }
 
-void calcPrSeHo(int i, char *tipIzvestaja)
+void calcPrSeHo(int i, char *tipIzvestaja, struct pacijent_st pacijenti[], struct analiza_st analize[])
 {
     int ti = 0; /// 1 - holesterol   2 - pritisak  3 - secer
     if(strcmp("pritisak", tipIzvestaja) == 0)
@@ -135,7 +138,7 @@ void calcPrSeHo(int i, char *tipIzvestaja)
 	}
 }
 
-void upisiIzvestaj(FILE *upis, int i)
+void upisiIzvestaj(FILE *upis, int i, struct analiza_st analize[])
 {
 	int j;
 	for(j = 0; j < i; j++)
