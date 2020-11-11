@@ -68,8 +68,8 @@ int ucitajPodatke(FILE *datoteka, struct pacijent_st pacijenti[])
 	int i = 0;
 	rewind(datoteka);
     while( (fscanf(datoteka, "%s %s %d %lf",
-               &pacijenti[i].ime,
-               &pacijenti[i].prezime,
+                pacijenti[i].ime,
+                pacijenti[i].prezime,
                &pacijenti[i].masa,
                &pacijenti[i].visinaM)) != EOF) {
         i++;
