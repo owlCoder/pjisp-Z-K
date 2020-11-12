@@ -9,18 +9,18 @@ struct poreska_stopa_st {
     unsigned osnovniPorez;
     double dodPorezPoKvNekretnine;
     double procPorPopustaPoClPorodice;
-} stope[MAX_NIZ];
+};
 
 struct porez_st {
     char skrOznakaGrada[2 + 1];
     double ukupanPorezBezPopusta;
     double ukupanPorezSaPopustom;
-} porezi[MAX_NIZ];
+};
 
 FILE *otvoriDatoteku(char *, char *);
-int ucitajPodatke(FILE *);
-void ukupanPorez(int, double, unsigned);
-void upisiIzvestaj(FILE *, int);
+int ucitajPodatke(FILE *, struct poreska_stopa_st[]);
+void ukupanPorez(int, double, unsigned, struct poreska_stopa_st[], struct porez_st[]);
+void upisiIzvestaj(FILE *, int, struct porez_st[]);
 
 int main(int argc, char **argm)
 {
@@ -34,12 +34,15 @@ int main(int argc, char **argm)
         FILE *datoteka = otvoriDatoteku(argm[3], "r");
         FILE *upis = otvoriDatoteku(argm[4], "w");
 
-        int i = ucitajPodatke(datoteka);
+        struct poreska_stopa_st porezi[MAX_NIZ];
+        struct porez_st stope[MAX_NIZ];
+
+        int i = ucitajPodatke(datoteka, porezi);
         double kvadratura = atof(argm[1]);
         unsigned clanovaDomacinstva = atoi(argm[2]);
 
-        ukupanPorez(i, kvadratura, clanovaDomacinstva);
-        upisiIzvestaj(upis, i);
+        ukupanPorez(i, kvadratura, clanovaDomacinstva, porezi, stope);
+        upisiIzvestaj(upis, i, stope);
 
         fclose(datoteka);
         fclose(upis);
@@ -61,12 +64,12 @@ FILE *otvoriDatoteku(char *naziv, char *rezim) {
         return datoteka;
 }
 
-int ucitajPodatke(FILE *datoteka)
+int ucitajPodatke(FILE *datoteka, struct poreska_stopa_st stope[])
 {
 	int i = 0;
 	rewind(datoteka);
     while( (fscanf(datoteka, "%s %d %lf %lf",
-               &stope[i].skrOznakaGrada,
+                stope[i].skrOznakaGrada,
                &stope[i].osnovniPorez,
                &stope[i].dodPorezPoKvNekretnine,
                &stope[i].procPorPopustaPoClPorodice)) != EOF) {
@@ -75,7 +78,7 @@ int ucitajPodatke(FILE *datoteka)
 	return i;
 }
 
-void ukupanPorez(int i, double kvadratura, unsigned clanovaDomacinstva)
+void ukupanPorez(int i, double kvadratura, unsigned clanovaDomacinstva, struct poreska_stopa_st stope[], struct porez_st porezi[])
 {
     int j;
 	for(j = 0; j < i; j++)
@@ -92,7 +95,7 @@ void ukupanPorez(int i, double kvadratura, unsigned clanovaDomacinstva)
     }
 }
 
-void upisiIzvestaj(FILE *upis, int i)
+void upisiIzvestaj(FILE *upis, int i, struct porez_st porezi[])
 {
 	int j;
 	for(j = 0; j < i; j++)
