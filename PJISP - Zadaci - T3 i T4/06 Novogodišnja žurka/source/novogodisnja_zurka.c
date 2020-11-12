@@ -7,18 +7,18 @@
 struct zelja_st {
     char nazivZeljenjePice[20 + 1];
     unsigned brojGostiju;
-} zelje[MAX_NIZ];
+};
 
 struct porudzbina_st {
     double brojPotrebnihParcadi;
     unsigned brojPotrebnihCelihParcadi;
     char nazivZeljenjePice[20 + 1];
-} porudzbine[MAX_NIZ];
+};
 
 FILE *otvoriDatoteku(char *, char *);
-int ucitajPodatke(FILE *);
-void celePice(int, double);
-void upisiIzvestaj(FILE *, int);
+int ucitajPodatke(FILE *, struct zelja_st[]);
+void celePice(int, double, struct zelja_st[], struct porudzbina_st[]);
+void upisiIzvestaj(FILE *, int, struct porudzbina_st[]);
 
 int main(int argc, char **argm)
 {
@@ -31,12 +31,15 @@ int main(int argc, char **argm)
 
         FILE *datoteka = otvoriDatoteku(argm[2], "r");
         FILE *upis = otvoriDatoteku(argm[3], "w");
+        
+        struct zelja_st zelje[MAX_NIZ];
+        struct porudzbina_st porudzbine[MAX_NIZ];
 
-        int i = ucitajPodatke(datoteka);
+        int i = ucitajPodatke(datoteka, zelje);
         double apetit = atof(argm[1]);
 
-        celePice(i, apetit);
-        upisiIzvestaj(upis, i);
+        celePice(i, apetit, zelje, porudzbine);
+        upisiIzvestaj(upis, i, porudzbine);
 
         fclose(datoteka);
         fclose(upis);
@@ -58,19 +61,19 @@ FILE *otvoriDatoteku(char *naziv, char *rezim) {
         return datoteka;
 }
 
-int ucitajPodatke(FILE *datoteka)
+int ucitajPodatke(FILE *datoteka, struct zelja_st zelje[])
 {
 	int i = 0;
 	rewind(datoteka);
     while( (fscanf(datoteka, "%u %s",
                &zelje[i].brojGostiju,
-               &zelje[i].nazivZeljenjePice)) != EOF) {
+                zelje[i].nazivZeljenjePice)) != EOF) {
         i++;
     }
 	return i;
 }
 
-void celePice(int i, double apetit)
+void celePice(int i, double apetit, struct zelja_st zelje[], struct porudzbina_st porudzbine[])
 {
     int j;
 	for(j = 0; j < i; j++)
@@ -89,7 +92,7 @@ void celePice(int i, double apetit)
 	}
 }
 
-void upisiIzvestaj(FILE *upis, int i)
+void upisiIzvestaj(FILE *upis, int i, struct porudzbina_st porudzbine[])
 {
 	int j;
 	for(j = 0; j < i; j++)
