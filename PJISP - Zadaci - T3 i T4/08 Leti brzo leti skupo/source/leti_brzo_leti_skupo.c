@@ -9,17 +9,17 @@ struct prevoznik_st {
     double cenaKarte;
     double maxMasaFreePrtljaga;
     double cenaVanMaxMase;
-} prevoznici[MAX_NIZ];
+};
 
 struct cena_st {
     double ukupnaCenaLeta;
     char nazivOperatera[20 + 1];
-} cene[MAX_NIZ];
+};
 
 FILE *otvoriDatoteku(char *, char *);
-int ucitajPodatke(FILE *);
-void ukupnaCena(int, double);
-void upisiIzvestaj(FILE *, int);
+int ucitajPodatke(FILE *, struct prevoznik_st[]);
+void ukupnaCena(int, double, struct prevoznik_st[], struct cena_st[]);
+void upisiIzvestaj(FILE *, int, struct cena_st[]);
 
 int main(int argc, char **argm)
 {
@@ -33,11 +33,14 @@ int main(int argc, char **argm)
         FILE *datoteka = otvoriDatoteku(argm[2], "r");
         FILE *upis = otvoriDatoteku(argm[3], "w");
 
-        int i = ucitajPodatke(datoteka);
+        struct prevoznik_st prevoznici[MAX_NIZ];
+        struct cena_st cene[MAX_NIZ];
+
+        int i = ucitajPodatke(datoteka, prevoznici);
         double masa = atof(argm[1]);
 
-        ukupnaCena(i, masa);
-        upisiIzvestaj(upis, i);
+        ukupnaCena(i, masa, prevoznici, cene);
+        upisiIzvestaj(upis, i, cene);
 
         fclose(datoteka);
         fclose(upis);
@@ -59,12 +62,12 @@ FILE *otvoriDatoteku(char *naziv, char *rezim) {
         return datoteka;
 }
 
-int ucitajPodatke(FILE *datoteka)
+int ucitajPodatke(FILE *datoteka, struct prevoznik_st prevoznici[])
 {
 	int i = 0;
 	rewind(datoteka);
     while( (fscanf(datoteka, "%s %lf %lf %lf",
-               &prevoznici[i].nazivOperatera,
+                prevoznici[i].nazivOperatera,
                &prevoznici[i].cenaKarte,
                &prevoznici[i].maxMasaFreePrtljaga,
                &prevoznici[i].cenaVanMaxMase)) != EOF) {
@@ -73,7 +76,7 @@ int ucitajPodatke(FILE *datoteka)
 	return i;
 }
 
-void ukupnaCena(int i, double masa)
+void ukupnaCena(int i, double masa, struct prevoznik_st prevoznici[], struct cena_st cene[])
 {
     int j;
 	for(j = 0; j < i; j++)
@@ -93,7 +96,7 @@ void ukupnaCena(int i, double masa)
 	}
 }
 
-void upisiIzvestaj(FILE *upis, int i)
+void upisiIzvestaj(FILE *upis, int i, struct cena_st cene[])
 {
 	int j;
 	for(j = 0; j < i; j++)
