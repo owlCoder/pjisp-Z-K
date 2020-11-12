@@ -8,18 +8,18 @@ struct takmicar_st {
     char ime[16 + 1];
     char prezime[16 + 1];
     unsigned ocena1, ocena2, ocena3;
-} takmicari[MAX_NIZ];
+};
 
 struct ocena_st {
     char ime[16 + 1];
     char prezime[16 + 1];
     double avgOcena;
-} ocene[MAX_NIZ];
+};
 
 FILE *otvoriDatoteku(char *, char *);
-int ucitajPodatke(FILE *);
-void average(int);
-void upisiIzvestaj(FILE *, int);
+int ucitajPodatke(FILE *, struct takmicar_st[]);
+void average(int, struct takmicar_st[], struct ocena_st[]);
+void upisiIzvestaj(FILE *, int, struct ocena_st[]);
 
 int main(int argc, char **argm)
 {
@@ -33,10 +33,13 @@ int main(int argc, char **argm)
         FILE *datoteka = otvoriDatoteku(argm[1], "r");
         FILE *upis = otvoriDatoteku(argm[2], "w");
 
-        int i = ucitajPodatke(datoteka);
+        struct takmicar_st takmicari[MAX_NIZ];
+        struct ocena_st ocene[MAX_NIZ];
+
+        int i = ucitajPodatke(datoteka, takmicari);
         
-        average(i);
-        upisiIzvestaj(upis, i);
+        average(i, takmicari, ocene);
+        upisiIzvestaj(upis, i, ocene);
 
         fclose(datoteka);
         fclose(upis);
@@ -58,13 +61,13 @@ FILE *otvoriDatoteku(char *naziv, char *rezim) {
         return datoteka;
 }
 
-int ucitajPodatke(FILE *datoteka)
+int ucitajPodatke(FILE *datoteka, struct takmicar_st takmicari[])
 {
 	int i = 0;
 	rewind(datoteka);
     while( (fscanf(datoteka, "%s %s %u %u %u",
-               &takmicari[i].ime,
-               &takmicari[i].prezime,
+                takmicari[i].ime,
+                takmicari[i].prezime,
                &takmicari[i].ocena1,
                &takmicari[i].ocena2,
                &takmicari[i].ocena3)) != EOF) {
@@ -73,7 +76,7 @@ int ucitajPodatke(FILE *datoteka)
 	return i;
 }
 
-void average(int i)
+void average(int i, struct takmicar_st takmicari[], struct ocena_st ocene[])
 {
     int j;
 	for(j = 0; j < i; j++)
@@ -90,7 +93,7 @@ void average(int i)
     }
 }
 
-void upisiIzvestaj(FILE *upis, int i)
+void upisiIzvestaj(FILE *upis, int i, struct ocena_st ocene[])
 {
 	int j;
 	for(j = 0; j < i; j++)
