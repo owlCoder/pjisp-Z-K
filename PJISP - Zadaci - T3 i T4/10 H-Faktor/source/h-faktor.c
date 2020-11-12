@@ -9,17 +9,17 @@ struct serija_st {
     double IMDBOcena;
     double maxZabelGledanost;
     unsigned maxBrMeseciIzmedjuDveSezone;
-} serije[MAX_NIZ];
+};
 
 struct hype_st {
     char naziv[30 + 1];
     double hypeFaktor;
-} hype[MAX_NIZ];
+};
 
 FILE *otvoriDatoteku(char *, char *);
-int ucitajPodatke(FILE *);
-void hypeCalc(int);
-void upisiIzvestaj(FILE *, int);
+int ucitajPodatke(FILE *, struct serija_st[]);
+void hypeCalc(int, struct serija_st[], struct hype_st[]);
+void upisiIzvestaj(FILE *, int, struct hype_st[]);
 
 int main(int argc, char **argm)
 {
@@ -33,10 +33,13 @@ int main(int argc, char **argm)
         FILE *datoteka = otvoriDatoteku(argm[1], "r");
         FILE *upis = otvoriDatoteku(argm[2], "w");
 
-        int i = ucitajPodatke(datoteka);
+        struct serija_st serije[MAX_NIZ];
+        struct hype_st hype[MAX_NIZ];
+
+        int i = ucitajPodatke(datoteka, serije);
         
-        hypeCalc(i);
-        upisiIzvestaj(upis, i);
+        hypeCalc(i, serije, hype);
+        upisiIzvestaj(upis, i, hype);
 
         fclose(datoteka);
         fclose(upis);
@@ -58,12 +61,12 @@ FILE *otvoriDatoteku(char *naziv, char *rezim) {
         return datoteka;
 }
 
-int ucitajPodatke(FILE *datoteka)
+int ucitajPodatke(FILE *datoteka, struct serija_st serije[])
 {
 	int i = 0;
 	rewind(datoteka);
     while( (fscanf(datoteka, "%s %lf %lf %u",
-               &serije[i].naziv,
+                serije[i].naziv,
                &serije[i].IMDBOcena,
                &serije[i].maxZabelGledanost,
                &serije[i].maxBrMeseciIzmedjuDveSezone)) != EOF) {
@@ -72,7 +75,7 @@ int ucitajPodatke(FILE *datoteka)
 	return i;
 }
 
-void hypeCalc(int i)
+void hypeCalc(int i, struct serija_st serije[], struct hype_st hype[])
 {
     int j;
 	for(j = 0; j < i; j++)
@@ -85,7 +88,7 @@ void hypeCalc(int i)
     }
 }
 
-void upisiIzvestaj(FILE *upis, int i)
+void upisiIzvestaj(FILE *upis, int i, struct hype_st hype[])
 {
 	int j;
 	for(j = 0; j < i; j++)
