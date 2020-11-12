@@ -66,8 +66,8 @@ int ucitajPodatke(FILE *datoteka)
 	int i = 0;
 	rewind(datoteka);
     while( (fscanf(datoteka, "%s %s %d %d %lf",
-               &paketi[i].nazivZemlje,
-               &paketi[i].nazivOperatera,
+                paketi[i].nazivZemlje,
+                paketi[i].nazivOperatera,
                &paketi[i].mesecnaPretplata,
                &paketi[i].brojKWhUkljUPaketu,
                &paketi[i].cenaKWhVanPaketa)) != EOF) {
