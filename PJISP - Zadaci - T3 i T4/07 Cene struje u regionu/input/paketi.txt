@@ -1,0 +1,5 @@
+Srbija     EPS             500  50  3.92
+Srbija     TajkunDOO       100   2  9.56
+Madjarska  HuElectro       495 100 12.31
+Slovenija  Elektroprivreda  50   0 15.99
+Slovenija  AlpEnergy         0   0 16.99
