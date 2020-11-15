@@ -35,7 +35,7 @@ int main()
 
     printf("\nNiz X");
     for(i = 0; i < n; i++)
-        printf("\n\tX[%d] = %d", *(X + i));
+        printf("\n\tX[%d] = %d", i, *(X + i));
     
     printf("\n\n\tSRVX = %.2lf\n\tBroj elemenata kao SRVX je: %d\n\n", SRVX, brElemKaoSrvx);
 
