@@ -27,7 +27,7 @@ max = 6 - -7 = 13
 int main()
 {
     int A[MAX_ARRAY_SIZE], i, n;
-    int x, y, z = 0;
+    int x, y;
 
     do {
         printf("\nUnesite velicinu niza [2 >= n <= %d]\n>> ", MAX_ARRAY_SIZE);
