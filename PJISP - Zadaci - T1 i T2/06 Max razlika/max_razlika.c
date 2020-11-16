@@ -30,7 +30,7 @@ int main()
     int x, y, z = 0;
 
     do {
-        printf("\nUnesite velicinu niza [0 > n <= %d]\n>> ", MAX_ARRAY_SIZE);
+        printf("\nUnesite velicinu niza [2 >= n <= %d]\n>> ", MAX_ARRAY_SIZE);
         scanf("%d", &n);
     } while(n < 1 || n > MAX_ARRAY_SIZE);
 
