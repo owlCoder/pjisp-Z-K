@@ -32,7 +32,7 @@ int main()
     do {
         printf("\nUnesite velicinu niza [2 >= n <= %d]\n>> ", MAX_ARRAY_SIZE);
         scanf("%d", &n);
-    } while(n < 1 || n > MAX_ARRAY_SIZE);
+    } while(n < 2 || n > MAX_ARRAY_SIZE);
 
     printf("\n*************** UNOS ELEMENATA NIZA ***************\n");
     for(i = 0; i < n; i++) {
