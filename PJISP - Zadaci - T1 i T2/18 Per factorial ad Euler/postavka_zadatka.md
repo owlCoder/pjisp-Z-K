@@ -9,7 +9,11 @@ sve realne promenljive trebaju biti tipa double
 ne koristiti promenljive tipa niz
 
 Za sledeće ulazne podatke:
-Unesite broj clanova reda: 5
+
+```javascript
+Unesite broj clanova reda: 5```javascript
+```
+
 očekivani izlaz je u sledećem formatu:
 
 ```javascript
