@@ -3,8 +3,6 @@
 
 #define MAX_ARRAY_SIZE 10
 
-unsigned is_neparni_sused(int *, int, int);
-
 int main()
 {
     int A[MAX_ARRAY_SIZE], i, count = 0, n, suma = 0;
