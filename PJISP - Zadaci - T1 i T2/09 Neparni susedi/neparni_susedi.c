@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <math.h>
 
 #define MAX_ARRAY_SIZE 10
 
@@ -7,7 +6,7 @@ unsigned is_neparni_sused(int *, int, int);
 
 int main()
 {
-    int A[MAX_ARRAY_SIZE], zbirC[MAX_ARRAY_SIZE], i, j, count = 0, n;
+    int A[MAX_ARRAY_SIZE], i, j, count = 0, n;
     unsigned jes = 0;
 
     do {
