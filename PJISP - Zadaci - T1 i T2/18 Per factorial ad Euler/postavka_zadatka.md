@@ -11,7 +11,7 @@ ne koristiti promenljive tipa niz
 Za sledeće ulazne podatke:
 
 ```javascript
-Unesite broj clanova reda: 5```javascript
+Unesite broj clanova reda: 5
 ```
 
 očekivani izlaz je u sledećem formatu:
