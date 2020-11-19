@@ -12,11 +12,13 @@ Za sledeće ulazne podatke:
 Unesite broj clanova reda: 5
 očekivani izlaz je u sledećem formatu:
 
-clan[i=0] =  1.000000<br/>
-clan[i=1] = -1.000000<br/>
-clan[i=2] =  0.500000<br/>
-clan[i=3] = -0.166667<br/>
-clan[i=4] =  0.041667<br/>
+```javascript
+clan[i=0] =  1.000000
+clan[i=1] = -1.000000
+clan[i=2] =  0.500000
+clan[i=3] = -0.166667
+clan[i=4] =  0.041667
 
-sum = 0.375000<br/><br/>
-e = 2.666667<br/>
+sum = 0.375000
+e = 2.666667
+```
