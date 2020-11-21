@@ -12,7 +12,7 @@
 #define HEIGHT_POS 22
 
 struct pixel_st {
-    unsigned char R, G, B;
+    unsigned char B, G, R; // gcc is pretty weird, swap variables location and fix bug!?
 };
 
 FILE *s_fopen(char *, char *);
@@ -20,7 +20,7 @@ void *s_calloc(size_t, size_t);
 unsigned bmp_heder(FILE *, unsigned char *);
 void read_img(FILE *, struct pixel_st *, unsigned);
 void write_img(FILE *, unsigned char *, struct pixel_st *, unsigned);
-void istinitost_na_max(struct pixel_st *, unsigned, double);
+void improve_truth(struct pixel_st *pixels, unsigned image_size, double truth_factor);
 
 int main(int argc, char **argm)
 {   
@@ -40,7 +40,7 @@ int main(int argc, char **argm)
         struct pixel_st *pixels = s_calloc(img_size, sizeof(struct pixel_st));
         
         read_img(inDatoteka, pixels, img_size);
-        istinitost_na_max(pixels, img_size, faktor_istine);
+        improve_truth(pixels, img_size, faktor_istine);
         write_img(izlaznaDatoteka, heder, pixels, img_size);
 
         free(pixels); free(heder); 
@@ -94,13 +94,11 @@ void write_img(FILE *datoteka, unsigned char *heder, struct pixel_st *pixels, un
     fwrite(pixels, sizeof(struct pixel_st), img_size, datoteka);
 }
 
-void istinitost_na_max(struct pixel_st *pixels, unsigned img_size, double faktor_istine)
-{
+void improve_truth(struct pixel_st *pixels, unsigned image_size, double truth_factor) {
     unsigned i;
-    for(i = 0; i < img_size; i++)
-    {
-        pixels[i].R = pixels[i].R * (1 - faktor_istine) + 0xFC * faktor_istine;
-        pixels[i].G = pixels[i].G * (1 - faktor_istine) + 0x89 * faktor_istine;
-        pixels[i].B = pixels[i].B * (1 - faktor_istine) + 0xAC * faktor_istine;
+    for(i=0; i<image_size; i++) {
+        pixels[i].R = pixels[i].R * (1 - truth_factor) + 0xFC * truth_factor;
+        pixels[i].G = pixels[i].G * (1 - truth_factor) + 0x89 * truth_factor;
+        pixels[i].B = pixels[i].B * (1 - truth_factor) + 0xAC * truth_factor;
     }
 }
