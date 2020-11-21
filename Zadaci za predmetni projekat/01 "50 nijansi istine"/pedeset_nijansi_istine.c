@@ -20,7 +20,7 @@ void *s_calloc(size_t, size_t);
 unsigned bmp_heder(FILE *, unsigned char *);
 void read_img(FILE *, struct pixel_st *, unsigned);
 void write_img(FILE *, unsigned char *, struct pixel_st *, unsigned);
-void improve_truth(struct pixel_st *pixels, unsigned image_size, double truth_factor);
+void istinitost_na_max(struct pixel_st *pixels, unsigned image_size, double truth_factor);
 
 int main(int argc, char **argm)
 {   
@@ -40,7 +40,7 @@ int main(int argc, char **argm)
         struct pixel_st *pixels = s_calloc(img_size, sizeof(struct pixel_st));
         
         read_img(inDatoteka, pixels, img_size);
-        improve_truth(pixels, img_size, faktor_istine);
+        istinitost_na_max(pixels, img_size, faktor_istine);
         write_img(izlaznaDatoteka, heder, pixels, img_size);
 
         free(pixels); free(heder); 
@@ -94,7 +94,7 @@ void write_img(FILE *datoteka, unsigned char *heder, struct pixel_st *pixels, un
     fwrite(pixels, sizeof(struct pixel_st), img_size, datoteka);
 }
 
-void improve_truth(struct pixel_st *pixels, unsigned image_size, double truth_factor) {
+void istinitost_na_max(struct pixel_st *pixels, unsigned image_size, double truth_factor) {
     unsigned i;
     for(i=0; i<image_size; i++) {
         pixels[i].R = pixels[i].R * (1 - truth_factor) + 0xFC * truth_factor;
