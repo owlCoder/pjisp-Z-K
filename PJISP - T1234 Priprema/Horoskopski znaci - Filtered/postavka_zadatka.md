@@ -1,5 +1,5 @@
-# Programski jezici i strukture podataka
-#### Rešeni zadatak za kolokvijum iz PJISP-a
+# Програмски језици и структуре података
+#### Решени задатак за припрему за колоквијум из PJISP-a
 ###
 ```javascript
 Написати програм који из задате улазне датотеке (licna_karta.txt) учитава статички низ структуре licnost, која садржи 
