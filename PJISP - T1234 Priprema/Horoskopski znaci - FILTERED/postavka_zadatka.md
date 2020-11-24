@@ -122,18 +122,18 @@ unsigned process_data(struct licnost_st *licnosti, struct horoskop_st *horoskopi
 
 unsigned hor_znak(const unsigned danR, const unsigned mesecR) 
 {
-    if( (mesecR == 3   && danR >= 21)  || (mesecR == 4   && danR <= 20) ) return 1; // strcpy(znak, "ovan");     // 21.3  -> 20.4
-    if( (mesecR == 4   && danR >= 21)  || (mesecR == 5   && danR <= 21) ) return 2; // strcpy(znak, "bik");      // 21.4  -> 21.5
-    if( (mesecR == 5   && danR >= 22)  || (mesecR == 6   && danR <= 21) ) return 3; // strcpy(znak, "blizanci"); // 22.5  -> 21.6
-    if( (mesecR == 6   && danR >= 22)  || (mesecR == 7   && danR <= 22) ) return 4; // strcpy(znak, "rak");      // 22.6  -> 22.7
-    if( (mesecR == 7   && danR >= 23)  || (mesecR == 8   && danR <= 22) ) return 5; // strcpy(znak, "lav");      // 23.7  -> 22.8
-    if( (mesecR == 8   && danR >= 23)  || (mesecR == 9   && danR <= 22) ) return 6; // strcpy(znak, "devica");   // 23.8  -> 22.9
-    if( (mesecR == 9   && danR >= 23)  || (mesecR == 10  && danR <= 23) ) return 7; // strcpy(znak, "vaga");     // 23.9  -> 23.10
-    if( (mesecR == 10  && danR >= 24)  || (mesecR == 11  && danR <= 22) ) return 8; // strcpy(znak, "skorpija"); // 24.10 -> 22.11
-    if( (mesecR == 11  && danR >= 23)  || (mesecR == 12  && danR <= 21) ) return 9; // strcpy(znak, "strelac");  // 23.11 -> 21.12
-    if( (mesecR == 12  && danR >= 22)  || (mesecR == 1   && danR <= 20) ) return 10; // strcpy(znak, "jarac");    // 22.12 -> 20.1
-    if( (mesecR == 1   && danR >= 21)  || (mesecR == 2   && danR <= 19) ) return 11; // strcpy(znak, "vodolija"); // 21.1  -> 19.2
-    if( (mesecR == 2   && danR >= 20)  || (mesecR == 3   && danR <= 20) ) return 12; // strcpy(znak, "ribe");     // 20.2  -> 20.3
+    if( (mesecR == 3   && danR >= 21)  || (mesecR == 4   && danR <= 20) ) return 1;     // 21.3  -> 20.4
+    if( (mesecR == 4   && danR >= 21)  || (mesecR == 5   && danR <= 21) ) return 2;     // 21.4  -> 21.5
+    if( (mesecR == 5   && danR >= 22)  || (mesecR == 6   && danR <= 21) ) return 3; 	// 22.5  -> 21.6
+    if( (mesecR == 6   && danR >= 22)  || (mesecR == 7   && danR <= 22) ) return 4;     // 22.6  -> 22.7
+    if( (mesecR == 7   && danR >= 23)  || (mesecR == 8   && danR <= 22) ) return 5;     // 23.7  -> 22.8
+    if( (mesecR == 8   && danR >= 23)  || (mesecR == 9   && danR <= 22) ) return 6;     // 23.8  -> 22.9
+    if( (mesecR == 9   && danR >= 23)  || (mesecR == 10  && danR <= 23) ) return 7;     // 23.9  -> 23.10
+    if( (mesecR == 10  && danR >= 24)  || (mesecR == 11  && danR <= 22) ) return 8;     // 24.10 -> 22.11
+    if( (mesecR == 11  && danR >= 23)  || (mesecR == 12  && danR <= 21) ) return 9;     // 23.11 -> 21.12
+    if( (mesecR == 12  && danR >= 22)  || (mesecR == 1   && danR <= 20) ) return 10;    // 22.12 -> 20.1
+    if( (mesecR == 1   && danR >= 21)  || (mesecR == 2   && danR <= 19) ) return 11;    // 21.1  -> 19.2
+    if( (mesecR == 2   && danR >= 20)  || (mesecR == 3   && danR <= 20) ) return 12;    // 20.2  -> 20.3
 }
 
 unsigned hor_znak_toInt(char *str) 
