@@ -1,14 +1,6 @@
-/* 
-Napisati program koji iz zadate datoteke (licna_karta.txt) ucitava statitcki niz strukture licnost, koja sadrzi 
-sledeca polja: ime, adresa, dan rodjenja, mesec rodjenja i godina rodjenja.
-Prikazati osobe koje su u horoskopu vodolije tako sto ce formirati novi statitcki niz strukture vodolije i upisati
-ga u zadatu izlaznu datoteku (npr. vodolije.txt).
-*/
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
 
 #define MAX_NAZIV 24 + 1
 #define MAX_NIZ 100
