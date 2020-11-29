@@ -1,0 +1,6 @@
+Partizan 10 -1
+Zvezda 12 1
+Vojvodina 15 2
+Radnik 10 2
+Spartak 15 0
+Cedevita 5 -12
