@@ -121,7 +121,7 @@ void swap(struct ekipa_st *ekipe, const unsigned i, const unsigned j)
 
 void isti_broj_bodova(struct ekipa_st *ekipe, const unsigned i, const unsigned j)
 {
-    if( u_abs(ekipe[i].golRazlika) < u_abs(ekipe[j].golRazlika) )
+    if( u_abs(ekipe[i].golRazlika) > u_abs(ekipe[j].golRazlika) )
         swap(ekipe, i, j);
 }
 
@@ -133,3 +133,4 @@ void upis_podataka(FILE *out, struct ekipa_st *ekipe, const unsigned n)
 }
 
 unsigned u_abs(int broj) { return broj < 0 ? -broj : broj; }
+
