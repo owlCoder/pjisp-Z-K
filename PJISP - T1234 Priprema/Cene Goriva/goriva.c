@@ -16,12 +16,13 @@ typedef struct gorivo_st
 FILE *otv_dat(char *, char *);
 unsigned ucitaj(FILE *, gorivo *);
 void obrada(FILE *, gorivo *, char *, const unsigned);
+void cena_goriva(gorivo *, const unsigned, char *);
 
 int main(int argn, char **args)
 {
     if(argn != 4)
     {
-        printf("Wrong program call!");
+        printf("\nWrong program call!\n");
         exit(36);
     }
 
@@ -32,6 +33,9 @@ int main(int argn, char **args)
 
     unsigned n = ucitaj(in, goriva);
     obrada(out, goriva, args[1], n);
+
+    cena_goriva(goriva, n, "min");
+    cena_goriva(goriva, n, "max");
     
     fclose(in);
     fclose(out);
@@ -78,6 +82,23 @@ void obrada(FILE *out, gorivo *goriva, char *tipGoriva, const unsigned n)
     FILE *fp = otv_dat(tmp, "w");
     suma /= p;
 
-    fprintf(fp, "Prosečna cena %s iznosi: %5.2lf\n", tipGoriva,  suma);
+    fprintf(fp, "Prosečna cena %sa iznosi: %5.2lf\n", tipGoriva,  suma);
     fclose(fp);
+}
+
+void cena_goriva(gorivo *goriva, const unsigned n, char *criteria)
+{
+    unsigned min = 0, max = 0, i, refrenti = 0;
+
+    min = strcmp(criteria, "min") == 0 ? 1 : 0;
+    max = strcmp(criteria, "max") == 0 ? 1 : 0;
+
+    for(i = 1; i < n; i++) 
+    {
+        if(min && goriva[i].cenaGoriva < goriva[refrenti].cenaGoriva)
+            refrenti = i;
+        if(max && goriva[i].cenaGoriva > goriva[refrenti].cenaGoriva)
+            refrenti = i;
+    }
+    printf("Gorivo sa %s cenom je: %.2lf\n", (min == 1 ? "najnižom" : "najvišom"), goriva[refrenti].cenaGoriva);
 }
