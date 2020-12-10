@@ -1,0 +1,7 @@
+USA meksicka 7.5 5.3
+UK japanska 8.9 3.6
+CANADA turska 9.1 9.5
+RUSSIA narodna 9.5 4.0
+ALASKA eskimo 7.5 7.5
+HAWAII domaca 4.5 8.5
+HUNGARY madjarska 5.5 8.7
