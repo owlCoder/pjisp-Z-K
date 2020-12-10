@@ -1,6 +1,6 @@
-# Programski jezici i strukture podataka
-#### Rešeni zadaci sa kolokvijuma i zbirke zadataka iz predmeta PJISP
+# Програмски језици и структуре података
+#### Решени задаци са претходних колоквијума из предмета ПЈИСП
 ###
 ```javascript
-Autor zbirke zadataka: http://pjisp.petarmaric.com/zbirka-zadataka/
+Аутор збирке задатака: http://pjisp.petarmaric.com/zbirka-zadataka/
 ```
