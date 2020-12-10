@@ -28,7 +28,9 @@ int main(int argc, char **argn)
 
     unsigned n = load_data(ulazna, timovi);
     process_data(timovi, n, atof(argn[2]));
-
+    
+    fclose(ulazna);
+    
     return 0;
 }
 
