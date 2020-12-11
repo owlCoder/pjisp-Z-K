@@ -121,11 +121,6 @@ void list_search_by_term(FILE *out, meso *glava, char *term)
         jeftino -> cenaPoKg, jeftino -> skrOznakaGrada, jeftino -> vrstaMesa);
     else
         fprintf(out, "\nNigde nema '%s'\n", term);
-   // free(jeftino); // izaziva grešku
-   /***
-        free(): double free detected in tcache 2
-        Aborted
-   **/
 }
 
 FILE *otvori_datoteku(char *name, char *mode)
