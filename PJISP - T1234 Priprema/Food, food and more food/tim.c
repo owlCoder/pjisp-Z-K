@@ -53,6 +53,7 @@ unsigned load_data(FILE *in, tim *timovi)
     { i++; }
     return i;
 }
+
 void process_data(const tim *timovi, const unsigned n, const double prolaznost)
 {
     unsigned i = 0, p = 0;
