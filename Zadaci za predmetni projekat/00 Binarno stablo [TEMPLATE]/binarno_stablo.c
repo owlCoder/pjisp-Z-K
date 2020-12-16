@@ -18,7 +18,6 @@ void brisanje_stabla(STABLO **);
 int main(int argc, char **argn)
 {
     STABLO *koren;
-
     init_stablo(&koren);
 
     if(argc < 2)
