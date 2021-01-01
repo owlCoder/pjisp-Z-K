@@ -17,6 +17,8 @@ IGRE *create_item(const char *, const char *, const char *, const double);
 void add_to_list(IGRE **, IGRE *);
 void load_data(FILE *, IGRE **);
 FILE *fopen_dat(char *, char *);
+void list_to_file(FILE *, IGRE *);
+void najpovoljnija_igra(FILE *, IGRE *, const char *, const char *);
 
 int main(int argn, char **args)
 {
@@ -26,8 +28,10 @@ int main(int argn, char **args)
     FILE *out = fopen_dat(args[4], "w");
 
     init_list(&g);
-    //load_data(in, &g);
-    add_to_list(&g, create_item("djksfds", "fdsfdsfd", "gdfsgsdsg", 55.55) );
+    load_data(in, &g);
+    list_to_file(out, g);
+    najpovoljnija_igra(out, g, args[1], args[2]);
+
     fclose(in);
     fclose(out);
 
@@ -84,4 +88,36 @@ FILE *fopen_dat(char *name, char *mode)
         exit(45);
     }
     return f;
+}
+
+void list_to_file(FILE *out, IGRE *g)
+{
+    while(g != NULL) {
+        fprintf(out, "%-10s %-8s %-8s %5.2lf\n", g -> nazivIgre, g -> zanr, g -> platforma , g -> cena);
+        g = g -> sledeci;
+    }
+}
+
+void najpovoljnija_igra(FILE *out, IGRE *g, const char *platforma, const char *zanr)
+{
+    IGRE *tmp = NULL;
+    
+    while(g != NULL) 
+    {
+        if((strcmp(g -> platforma, platforma) == 0) && (strcmp(g -> zanr, zanr) == 0)) {
+            if(g -> cena < tmp -> cena)
+                tmp = g;
+            }
+            g = g -> sledeci;
+    }
+
+    if(tmp == NULL) {
+        fprintf(out, "\nZa %s platformu ne postoje '%s' igre!\n", platforma, zanr);
+        return;
+    }
+    else
+    {
+        fprintf(out, "\nNajpovoljnija '%s' igra za %s platformu je:\n%s %.2lf", zanr, platforma, tmp -> nazivIgre, g -> cena);
+        return;
+    }
 }
