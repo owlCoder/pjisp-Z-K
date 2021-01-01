@@ -92,6 +92,11 @@ FILE *fopen_dat(char *name, char *mode)
 
 void list_to_file(FILE *out, IGRE *g)
 {
+    if(g == NULL) {
+      printf("\nLista je prazna!\n");
+      exit(7);
+    }
+
     while(g != NULL) {
         fprintf(out, "%-10s %-8s %-8s %5.2lf\n", g -> nazivIgre, g -> zanr, g -> platforma , g -> cena);
         g = g -> sledeci;
