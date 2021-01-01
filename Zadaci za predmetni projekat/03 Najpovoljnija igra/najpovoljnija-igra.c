@@ -101,11 +101,13 @@ void list_to_file(FILE *out, IGRE *g)
 void najpovoljnija_igra(FILE *out, IGRE *g, const char *platforma, const char *zanr)
 {
     IGRE *tmp = NULL;
-    
+        
     while(g != NULL) 
     {
         if((strcmp(g -> platforma, platforma) == 0) && (strcmp(g -> zanr, zanr) == 0)) {
-            if(g -> cena < tmp -> cena)
+            if(tmp == NULL)
+                tmp = g;
+            else if(g -> cena < tmp -> cena)
                 tmp = g;
             }
             g = g -> sledeci;
@@ -117,7 +119,7 @@ void najpovoljnija_igra(FILE *out, IGRE *g, const char *platforma, const char *z
     }
     else
     {
-        fprintf(out, "\nNajpovoljnija '%s' igra za %s platformu je:\n%s %.2lf", zanr, platforma, tmp -> nazivIgre, g -> cena);
+        fprintf(out, "\nNajpovoljnija '%s' igra za %s platformu je:\n%s %.2lf\n", zanr, platforma, tmp -> nazivIgre, tmp -> cena);
         return;
     }
 }
