@@ -22,6 +22,10 @@ void najpovoljnija_igra(FILE *, IGRE *, const char *, const char *);
 
 int main(int argn, char **args)
 {
+    if (argn != 5) {
+        printf("USAGE: %s PLATFORMA ZANR IN_FILENAME OUT_FILENAME\n", args[0]);
+        exit(11);
+    }
     IGRE *g;
     
     FILE *in = fopen_dat(args[3], "r");
