@@ -16,6 +16,7 @@ PEKARE *create_item(const char *, const unsigned, const double);
 void push(PEKARE **, PEKARE *);
 char *pop(PEKARE **);
 char *top_data(PEKARE *);
+unsigned is_empty_stack(PEKARE *);
 void empty_stack(PEKARE **);
 
 void load_data(FILE *, PEKARE **);
