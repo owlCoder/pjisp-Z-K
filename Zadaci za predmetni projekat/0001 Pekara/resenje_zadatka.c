@@ -36,10 +36,8 @@ int main(int argn, char **args)
 
     init_stack(&vrh);
     load_data(in, &vrh);
-
-
     empty_stack(&vrh);
-puts(pop(&vrh));
+
     fclose(in);
     fclose(out);
 
