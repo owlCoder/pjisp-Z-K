@@ -13,15 +13,15 @@ typedef struct pekara_st {
 
 void init_stack(PEKARE **);
 PEKARE *create_item(const char *, const unsigned, const double);
-void push(PEKARE **, PEKARE *);
+unsigned push(PEKARE **, PEKARE *, FILE *, const unsigned);
 PEKARE *pop(PEKARE **);
 unsigned is_empty_stack(PEKARE *);
 void empty_stack(PEKARE **);
 
-void load_data(FILE *, PEKARE **);
+void load_data(FILE *, FILE *, PEKARE **, const unsigned);
 FILE *file_open(char *, char *);
 
-void raspodela_peciva(FILE *, PEKARE **, const unsigned);
+unsigned raspodela_peciva(FILE *, PEKARE **, unsigned);
 
 int main(int argn, char **args)
 {
@@ -36,8 +36,7 @@ int main(int argn, char **args)
     FILE *out = file_open(args[3], "w");
 
     init_stack(&vrh);
-    load_data(in, &vrh);
-    raspodela_peciva(out, &vrh, atoi(args[1]));
+    load_data(in, out, &vrh, atoi(args[1]));
     empty_stack(&vrh);
 
     fclose(in);
@@ -70,10 +69,12 @@ PEKARE *create_item(const char *naziv, const unsigned obimProdaje, const double 
     return new;
 }
 
-void push(PEKARE **vrh, PEKARE *new)
+unsigned push(PEKARE **vrh, PEKARE *new, FILE *out, const unsigned proizvedeno)
 {
     new -> sledeci = *vrh;
     *vrh = new;
+
+    return raspodela_peciva(out, vrh, proizvedeno);
 }
 
 PEKARE *pop(PEKARE **vrh) {
@@ -93,14 +94,14 @@ void empty_stack(PEKARE **vrh) {
     }
 }
 
-void load_data(FILE *in, PEKARE **vrh) {
+void load_data(FILE *in, FILE *out, PEKARE **vrh, const unsigned proizvedeno) {
     PEKARE p;
-
+    int ostatak = proizvedeno;
     while(fscanf(in, "%s %d %lf", 
                        p.naziv, 
                       &p.obimProdaje, 
                       &p.avgCena) != EOF)
-        push(vrh, create_item(p.naziv, p.obimProdaje, p.avgCena));
+        ostatak = push(vrh, create_item(p.naziv, p.obimProdaje, p.avgCena), out, ostatak);
 }
 
 FILE *file_open(char *name, char *mode) {
@@ -113,9 +114,34 @@ FILE *file_open(char *name, char *mode) {
     return f;
 }
 
-void raspodela_peciva(FILE *out, PEKARE **vrh, const unsigned proizvedeno)
+unsigned raspodela_peciva(FILE *out, PEKARE **vrh, unsigned proizvedeno)
 {
     if(is_empty_stack(*vrh))
-        return;
-    //else if()
+        exit(EXIT_FAILURE);
+    else {
+        int ostatak, dobijeno;
+        char status[10];
+        proizvedeno = proizvedeno < 0 ? 0 : proizvedeno;
+
+        if(proizvedeno >= (*vrh) -> obimProdaje) {
+            ostatak = proizvedeno - ((*vrh) -> obimProdaje);
+            dobijeno = (*vrh) -> obimProdaje;
+            strcpy(status, "OK");
+        }
+        else if(proizvedeno == 0) {
+            dobijeno = 0;
+            strcpy(status, "MANJAK");
+        }
+        else {
+            if(proizvedeno > 0) {
+                dobijeno = ostatak;
+                ostatak = 0;
+            }
+            strcpy(status, "MANJAK");
+        }
+        fprintf(out, "%-10s %5d %-10s\n", (*vrh) -> naziv, dobijeno, status);
+        pop(vrh);
+
+        return ostatak;
+    }
 }
