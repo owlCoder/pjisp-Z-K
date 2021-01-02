@@ -22,6 +22,8 @@ void empty_stack(PEKARE **);
 void load_data(FILE *, PEKARE **);
 FILE *file_open(char *, char *);
 
+void raspodela_peciva(FILE *, PEKARE **, const unsigned);
+
 int main(int argn, char **args)
 {
     if (argn != 4) {
@@ -36,6 +38,7 @@ int main(int argn, char **args)
 
     init_stack(&vrh);
     load_data(in, &vrh);
+    raspodela_peciva(out, &vrh, atoi(args[1]));
     empty_stack(&vrh);
 
     fclose(in);
@@ -72,7 +75,6 @@ void push(PEKARE **vrh, PEKARE *new)
 {
     new -> sledeci = *vrh;
     *vrh = new;
-    // printf("%s pushed to stack\n", (*vrh) -> naziv);
 }
 
 char *pop(PEKARE **vrh) {
@@ -126,4 +128,7 @@ FILE *file_open(char *name, char *mode) {
     return f;
 }
 
-//void raspodela_peciva()
+void raspodela_peciva(FILE *out, PEKARE **vrh, const unsigned proizvedeno)
+{
+    return;
+}
