@@ -96,12 +96,31 @@ void empty_stack(PEKARE **vrh) {
 
 void load_data(FILE *in, FILE *out, PEKARE **vrh, const unsigned proizvedeno) {
     PEKARE p;
+    unsigned i = 0, j = 1;
     int ostatak = proizvedeno;
     while(fscanf(in, "%s %d %lf", 
                        p.naziv, 
                       &p.obimProdaje, 
+                      &p.avgCena) != EOF) 
+        i++;
+
+    fseek(in, 0, SEEK_SET);
+    while(fscanf(in, "%s %d %lf", 
+                       p.naziv, 
+                      &p.obimProdaje, 
                       &p.avgCena) != EOF)
-        ostatak = push(vrh, create_item(p.naziv, p.obimProdaje, p.avgCena), out, ostatak);
+    {
+        if(j != i)
+            ostatak = push(vrh, create_item(p.naziv, p.obimProdaje, p.avgCena), out, ostatak);
+        else
+            {   
+                if(ostatak > p.obimProdaje)
+                    fprintf(out, "%-10s %5d %-10s\n", p.naziv, ostatak, "VIŠAK");
+                else
+                    ostatak = push(vrh, create_item(p.naziv, p.obimProdaje, p.avgCena), out, ostatak);
+            }
+        j++;
+    }
 }
 
 FILE *file_open(char *name, char *mode) {
