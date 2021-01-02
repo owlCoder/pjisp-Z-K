@@ -14,8 +14,7 @@ typedef struct pekara_st {
 void init_stack(PEKARE **);
 PEKARE *create_item(const char *, const unsigned, const double);
 void push(PEKARE **, PEKARE *);
-char *pop(PEKARE **);
-char *top_data(PEKARE *);
+PEKARE *pop(PEKARE **);
 unsigned is_empty_stack(PEKARE *);
 void empty_stack(PEKARE **);
 
@@ -77,28 +76,14 @@ void push(PEKARE **vrh, PEKARE *new)
     *vrh = new;
 }
 
-char *pop(PEKARE **vrh) {
+PEKARE *pop(PEKARE **vrh) {
     if(is_empty_stack(*vrh))
-        return "\nSTEK JE PRAZAN!\n";
+        return NULL;
     
     PEKARE *tmp = *vrh;
     *vrh = (*vrh) -> sledeci;
     
-    char *s = malloc(30 * sizeof(char));
-    sprintf(s, "%s %d", tmp -> naziv, tmp -> obimProdaje);
-    free(tmp);
-
-    return s;
-}
-
-char *top_data(PEKARE *vrh) {
-    if(is_empty_stack(vrh)) {
-        printf("\nSTEK JE PRAZAN!\n");
-        return NULL;
-    }
-    else {
-        return pop(&vrh);
-    }
+    return tmp;
 }
 
 void empty_stack(PEKARE **vrh) {
@@ -130,5 +115,7 @@ FILE *file_open(char *name, char *mode) {
 
 void raspodela_peciva(FILE *out, PEKARE **vrh, const unsigned proizvedeno)
 {
-    return;
+    if(is_empty_stack(*vrh))
+        return;
+    //else if()
 }
