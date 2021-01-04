@@ -19,6 +19,7 @@ void load_data(FILE *, IGRE **);
 FILE *fopen_dat(char *, char *);
 void list_to_file(FILE *, IGRE *);
 void najpovoljnija_igra(FILE *, IGRE *, const char *, const char *);
+void brisanje_liste(LISTA **);
 
 int main(int argn, char **args)
 {
@@ -35,6 +36,7 @@ int main(int argn, char **args)
     load_data(in, &g);
     list_to_file(out, g);
     najpovoljnija_igra(out, g, args[1], args[2]);
+    brisanje_liste(&g);
 
     fclose(in);
     fclose(out);
@@ -131,4 +133,15 @@ void najpovoljnija_igra(FILE *out, IGRE *g, const char *platforma, const char *z
         fprintf(out, "\nNajpovoljnija '%s' igra za %s platformu je:\n%s %.2lf\n", zanr, platforma, tmp -> nazivIgre, tmp -> cena);
         return;
     }
+}
+
+void brisanje_liste(LISTA **glava)
+{
+    if(*glava == NULL)
+        return;
+    
+    brisanje_liste(&((*glava) -> sledeci));
+    
+    free((*glava));
+    (*glava) = NULL;
 }
