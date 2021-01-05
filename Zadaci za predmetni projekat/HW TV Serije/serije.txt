@@ -1,0 +1,8 @@
+TheSopranos 86 1999 55 USA Drama
+OnlyFoolsAndHorses 64 1981 30 GBR Sitcom
+Friends 236 1994 21 USA Sitcom
+SrecniLjudi 70 1993 45 SRB Comedy
+PorodicnoBlago 62 1998 55 SRB Drama
+Blackadder 24 1983 30 GBR Comedy
+LaPiovra 48 1984 105 ITA Drama
+HouseMD 177 2004 42 USA Drama
