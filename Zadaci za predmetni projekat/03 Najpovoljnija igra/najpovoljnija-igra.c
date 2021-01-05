@@ -19,7 +19,7 @@ void load_data(FILE *, IGRE **);
 FILE *fopen_dat(char *, char *);
 void list_to_file(FILE *, IGRE *);
 void najpovoljnija_igra(FILE *, IGRE *, const char *, const char *);
-void brisanje_liste(LISTA **);
+void brisanje_liste(IGRE **);
 
 int main(int argn, char **args)
 {
@@ -135,7 +135,7 @@ void najpovoljnija_igra(FILE *out, IGRE *g, const char *platforma, const char *z
     }
 }
 
-void brisanje_liste(LISTA **glava)
+void brisanje_liste(IGRE **glava)
 {
     if(*glava == NULL)
         return;
