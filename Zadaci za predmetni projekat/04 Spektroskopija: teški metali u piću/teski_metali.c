@@ -21,6 +21,7 @@ void print_e(ELEMENT *);
 void delete_e(ELEMENT **);
 
 // Generic files functions
+FILE *safe_f(char *, char *);
 
 int main(int argn, char **args)
 {
@@ -30,9 +31,15 @@ int main(int argn, char **args)
     }
     ELEMENT *e;
 
+    FILE *in = safe_f(args[2], "r");
+    FILE *out = safe_f(args[3], "w");
+
     head_e(&e); 
     // add_e(&e, create_e("GG", "FFF", 32, "FKFD")); 
     delete_e(&e);
+
+    fclose(in);
+    fclose(out);
 
     return 0;
 }
@@ -82,4 +89,14 @@ void delete_e(ELEMENT **e)
     delete_e(&(*e) -> s);
     free(*e);
     *e = NULL;
+}
+
+FILE *safe_f(char *n, char *m)
+{
+    FILE *f = fopen(n, m);
+    if(f == NULL) {
+        puts("INVALID REQUEST FOR OPENING FILE!");
+        exit(46);
+    }
+    return f;
 }
