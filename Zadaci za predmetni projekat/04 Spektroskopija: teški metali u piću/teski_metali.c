@@ -16,6 +16,8 @@ typedef struct element_st {
 // Functions for work with LIST
 void head_e(ELEMENT **);
 ELEMENT *create_e(const char *, const char *, const int, const char *);
+void add_e(ELEMENT **, ELEMENT *);
+
 // Generic files functions
 
 int main(int argn, char **args)
@@ -27,6 +29,7 @@ int main(int argn, char **args)
     ELEMENT *e;
 
     head_e(&e);
+    //add_e(&e, create_e("C", "VINO", 33, "metal"));
 
     return 0;
 }
@@ -50,4 +53,13 @@ ELEMENT *create_e(const char *s, const char *i, const int a, const char *v)
     new -> s = NULL;
 
     return new;
+}
+
+void add_e(ELEMENT **e, ELEMENT *n)
+{
+    if(*e == NULL) {
+        *e = n;
+        return;
+    }
+    add_e(&(*e) -> s, n);
 }
