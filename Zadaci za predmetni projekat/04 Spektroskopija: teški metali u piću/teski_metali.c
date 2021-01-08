@@ -23,7 +23,7 @@ void delete_e(ELEMENT **);
 // Generic files functions
 FILE *safe_f(char *, char *);
 void read_f(FILE *);
-void receive_data(const char *, const char *, const int, const char *);
+void receive_data(ELEMENT *);
 
 int main(int argn, char **args)
 {
@@ -101,4 +101,16 @@ FILE *safe_f(char *n, char *m)
         exit(46);
     }
     return f;
+}
+
+void read_f(FILE *f) 
+{
+    ELEMENT *tmp = (ELEMENT *) malloc(sizeof(ELEMENT));
+
+    while(fscanf(f, "%s %s %d %s", tmp -> simbol,    tmp -> ime,
+                                &tmp -> atomska_t, tmp -> vrsta) != EOF)
+        receive_data(tmp);
+
+    free(tmp);
+    tmp = NULL;
 }
