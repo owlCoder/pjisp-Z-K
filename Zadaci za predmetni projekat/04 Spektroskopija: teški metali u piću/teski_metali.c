@@ -13,6 +13,8 @@ typedef struct element_st {
     struct element_st *s;
 } ELEMENT;
 
+void head_e(ELEMENT **);
+
 int main(int argn, char **args)
 {
     if(argn != 4) {
@@ -20,6 +22,13 @@ int main(int argn, char **args)
         exit(11);
     }
     ELEMENT *e;
+
+    head_e(&e);
     
     return 0;
+}
+
+void head_e(ELEMENT **e)
+{
+    *e = NULL;
 }
