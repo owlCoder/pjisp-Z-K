@@ -9,35 +9,35 @@ typedef struct restoran_st {
     char naziv[MAX_RESTORAN];
     char vrsta[MAX_KUHINJA];
     double ocena;
-    struct restoran_st *sledeci;
+    struct restoran_st *levi, *desni;
 } RESTORAN;
 
-void init_list(RESTORAN **);
-void add_to_list(RESTORAN **, RESTORAN *);
+void init_tree(RESTORAN **);
+void add_to_tree(RESTORAN **, RESTORAN *);
 RESTORAN *create_item(const char *, const char *, const double);
-void print_list(FILE *, RESTORAN *);
-void destroy_list(RESTORAN **);
+void print_tree(FILE *, RESTORAN *);
+void destroy_tree(RESTORAN **);
 
 FILE *otvori_datoteku(char *, char *);
 void load_data(FILE *, RESTORAN **);
-void best_restoran(FILE *, RESTORAN *, char *);
+void worst_restoran(FILE *, RESTORAN *);
 
 int main(int argc, char **args)
 {
-    if(argc != 4)
+    if(argc != 3)
     {
-        printf("\nUsage: %s tip RESTORAN in.txt out.txt\n\n", args[1]);
+        printf("\nUsage: %s RESTORAN in.txt out.txt\n\n", args[1]);
         exit(35);
     }
-    RESTORAN *glava;
-    FILE *ulazna = otvori_datoteku(args[2], "r");
-    FILE *izlazna = otvori_datoteku(args[3], "w");
+    RESTORAN *koren;
+    FILE *ulazna = otvori_datoteku(args[1], "r");
+    FILE *izlazna = otvori_datoteku(args[2], "w");
 
-    init_list(&glava);
-    load_data(ulazna, &glava);
-    print_list(izlazna, glava);
-    best_restoran(izlazna, glava, args[1]);
-    destroy_list(&glava);
+    init_tree(&koren);
+    load_data(ulazna, &koren);
+    print_tree(izlazna, koren);
+    worst_restoran(izlazna, koren);
+    destroy_tree(&koren);
 
     fclose(ulazna);
     fclose(izlazna);
@@ -45,18 +45,21 @@ int main(int argc, char **args)
     return 0;
 }
 
-void init_list(RESTORAN **glava)
+void init_tree(RESTORAN **koren)
 {
-    *glava = NULL;
+    *koren = NULL;
 }
 
-void add_to_list(RESTORAN **glava, RESTORAN *novi)
+void add_to_tree(RESTORAN **koren, RESTORAN *novi)
 {
-   if(*glava == NULL) {
-       *glava = novi;
+   if(*koren == NULL) {
+       *koren = novi;
        return;
    }
-   add_to_list(&(*glava) -> sledeci, novi);
+   else if(novi -> ocena < (*koren) -> ocena)
+        add_to_tree(&(*koren) -> levi, novi);
+   else
+        add_to_tree(&(*koren) -> desni, novi);
 }
 
 RESTORAN *create_item(const char *naziv, const char *vrsta, const double ocena)
@@ -64,38 +67,36 @@ RESTORAN *create_item(const char *naziv, const char *vrsta, const double ocena)
     RESTORAN *tmp = malloc(sizeof(RESTORAN));
     if(tmp == NULL)
     {
-        printf("\nNo memory for new item in list!\n\n");
+        printf("\nNo memory for new item in tree!\n\n");
         exit(42);
     }
     strcpy(tmp -> naziv, naziv); 
     strcpy(tmp -> vrsta, vrsta);
     tmp -> ocena = ocena;
-    tmp -> sledeci = NULL;
+    tmp -> levi = NULL;
+    tmp -> desni = NULL;
 
     return tmp;
 }
 
-void print_list(FILE *out, RESTORAN *glava)
+void print_tree(FILE *out, RESTORAN *koren)
 {   
-    if(glava == NULL)
-    {
-        printf("\nLISTA JE PRAZNA!\n");
-        exit(33);
-    }
-    while(glava != NULL)
-    {
-        fprintf(out, "%3.1lf %-10s %s\n", glava -> ocena, glava -> naziv, glava -> vrsta);
-        glava = glava -> sledeci;
-    }
+    if(koren == NULL)
+        return;
+
+    print_tree(out, koren -> desni);
+    fprintf(out, "%3.1lf %-10s %s\n", koren -> ocena, koren -> naziv, koren -> vrsta);
+    print_tree(out, koren -> levi);
 }
 
-void destroy_list(RESTORAN **glava)
+void destroy_tree(RESTORAN **koren)
 {
-    if(*glava != NULL)
+    if(*koren != NULL)
     {
-        destroy_list(&((*glava) -> sledeci));
-        free(*glava);
-        *glava = NULL;
+        destroy_tree(&((*koren) -> levi));
+        destroy_tree(&((*koren) -> desni));
+        free(*koren);
+        *koren = NULL;
     }
 }
 
@@ -110,35 +111,27 @@ FILE *otvori_datoteku(char *name, char *mode)
     return f;
 }
 
-void load_data(FILE *in, RESTORAN **glava)
+void load_data(FILE *in, RESTORAN **koren)
 {
     RESTORAN *tmp = malloc(sizeof(RESTORAN));
     while(fscanf(in, "%s %s %lf", tmp -> naziv, tmp -> vrsta, &tmp -> ocena) != EOF)
     {
         RESTORAN *novi = create_item(tmp -> naziv, tmp -> vrsta, tmp -> ocena);
-        add_to_list(glava, novi);
+        add_to_tree(koren, novi);
     }
 }
 
-void best_restoran(FILE *out, RESTORAN *g, char *criteria)
+void worst_restoran(FILE *out, RESTORAN *g)
 {
     RESTORAN *r = NULL;
     while(g != NULL) {
-        if(strcmp(g -> vrsta, criteria) == 0) {
-            if(r == NULL)
-                r = g;
-            if(g -> ocena > r -> ocena)
-                r = g;
-        }
-        g = g -> sledeci;
+        if(r == NULL)
+            r = g;
+        if(g -> ocena < r -> ocena)
+            r = g;
+        g = g -> levi;
     }
-    if(r == NULL) {
-        fprintf(out, "\nU gradu ne postoji %s restoran!", criteria);
-        return;
-    }
-    else {
-        fprintf(out, "\nNajbolje ocenjen %s restoran u gradu je:\n%3.1lf %-10s %s", 
-                criteria, r -> ocena, r -> naziv, r -> vrsta);
-        return;
-    }
+
+    fprintf(out, "\nNajgore ocenjen restoran u gradu je:\n%3.1lf %-10s %s", 
+            r -> ocena, r -> naziv, r -> vrsta);
 }
