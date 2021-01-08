@@ -18,6 +18,7 @@ void head_e(ELEMENT **);
 ELEMENT *create_e(const char *, const char *, const int, const char *);
 void add_e(ELEMENT **, ELEMENT *);
 void print_e(ELEMENT *);
+void delete_e(ELEMENT **);
 
 // Generic files functions
 
@@ -29,7 +30,9 @@ int main(int argn, char **args)
     }
     ELEMENT *e;
 
-    head_e(&e);
+    head_e(&e); 
+    // add_e(&e, create_e("GG", "FFF", 32, "FKFD")); 
+    delete_e(&e);
 
     return 0;
 }
@@ -70,4 +73,13 @@ void print_e(ELEMENT *e)
         return;
     printf("%s %s %d %s\n", e -> simbol, e -> ime, e -> atomska_t, e -> vrsta);
     print_e(e -> s);
+}
+
+void delete_e(ELEMENT **e)
+{
+    if(*e == NULL)
+        return;
+    delete_e(&(*e) -> s);
+    free(*e);
+    *e = NULL;
 }
