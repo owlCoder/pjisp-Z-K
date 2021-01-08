@@ -8,14 +8,14 @@
 typedef struct element_st {
     char simbol[MAX_SIMBOL];
     char ime[MAX_STR];
-    int atomska_t;
+    unsigned atomska_t;
     char vrsta[MAX_STR];
     struct element_st *s;
 } ELEMENT;
 
 // Functions for work with LIST
 void head_e(ELEMENT **);
-ELEMENT *create_e(const char *, const char *, const int, const char *);
+ELEMENT *create_e(const char *, const char *, const unsigned, const char *);
 void add_e(ELEMENT **, ELEMENT *);
 void print_e(ELEMENT *);
 void delete_e(ELEMENT **);
@@ -24,6 +24,9 @@ void delete_e(ELEMENT **);
 FILE *safe_f(char *, char *);
 void read_f(FILE *, ELEMENT **);
 void receive_data(ELEMENT *, ELEMENT **);
+
+// Additional functions per exercise
+void print_e_custom(FILE *, ELEMENT *);
 
 int main(int argn, char **args)
 {
@@ -38,6 +41,7 @@ int main(int argn, char **args)
 
     head_e(&e); 
     read_f(in, &e);
+    print_e_custom(out, e);
     delete_e(&e);
 
     fclose(in);
@@ -51,7 +55,7 @@ void head_e(ELEMENT **e)
     *e = NULL;
 }
 
-ELEMENT *create_e(const char *s, const char *i, const int a, const char *v)
+ELEMENT *create_e(const char *s, const char *i, const unsigned a, const char *v)
 {
     ELEMENT *new = (ELEMENT *) malloc(sizeof(ELEMENT));
     if(new == NULL) {
@@ -80,7 +84,7 @@ void print_e(ELEMENT *e)
 {
     if(e == NULL)
         return;
-    printf("%s %s %d %s\n", e -> simbol, e -> ime, e -> atomska_t, e -> vrsta);
+    printf("%s %s %u %s\n", e -> simbol, e -> ime, e -> atomska_t, e -> vrsta);
     print_e(e -> s);
 }
 
@@ -107,7 +111,7 @@ void read_f(FILE *f, ELEMENT **e)
 {
     ELEMENT *tmp = (ELEMENT *) malloc(sizeof(ELEMENT));
 
-    while(fscanf(f, "%s %s %d %s", tmp -> simbol,    tmp -> ime,
+    while(fscanf(f, "%s %s %u %s", tmp -> simbol,    tmp -> ime,
                                 &tmp -> atomska_t, tmp -> vrsta) != EOF)
         receive_data(tmp, e);
 
@@ -121,4 +125,12 @@ void receive_data(ELEMENT *n, ELEMENT **e)
     new = create_e(n -> simbol,    n -> ime,
                       n -> atomska_t, n -> vrsta);
     add_e(e, new);
+}
+
+void print_e_custom(FILE *out, ELEMENT *e)
+{
+    if(e == NULL)   
+        return;
+    fprintf(out, "%-2s %3u %s\n", e -> simbol, e -> atomska_t, e -> vrsta);
+    print_e_custom(out, e -> s);
 }
