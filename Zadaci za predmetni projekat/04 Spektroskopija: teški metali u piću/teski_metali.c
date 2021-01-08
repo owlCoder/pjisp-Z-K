@@ -17,6 +17,7 @@ typedef struct element_st {
 void head_e(ELEMENT **);
 ELEMENT *create_e(const char *, const char *, const int, const char *);
 void add_e(ELEMENT **, ELEMENT *);
+void print_e(ELEMENT *);
 
 // Generic files functions
 
@@ -29,7 +30,6 @@ int main(int argn, char **args)
     ELEMENT *e;
 
     head_e(&e);
-    //add_e(&e, create_e("C", "VINO", 33, "metal"));
 
     return 0;
 }
@@ -62,4 +62,12 @@ void add_e(ELEMENT **e, ELEMENT *n)
         return;
     }
     add_e(&(*e) -> s, n);
+}
+
+void print_e(ELEMENT *e)
+{
+    if(e == NULL)
+        return;
+    printf("%s %s %d %s\n", e -> simbol, e -> ime, e -> atomska_t, e -> vrsta);
+    print_e(e -> s);
 }
