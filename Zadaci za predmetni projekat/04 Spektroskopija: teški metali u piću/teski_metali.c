@@ -9,7 +9,7 @@ typedef struct element_st {
     char simbol[MAX_SIMBOL];
     char ime[MAX_STR];
     int atomska_t;
-    char vrsta[MAX_SIMBOL];
+    char vrsta[MAX_STR];
     struct element_st *s;
 } ELEMENT;
 
