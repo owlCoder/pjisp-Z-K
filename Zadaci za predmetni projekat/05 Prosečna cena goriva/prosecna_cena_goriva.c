@@ -25,7 +25,7 @@ int main(int argc, char **argn)
 {
     if(argc != 4)
     {
-        printf("\nUsage: %s tipgoriva in.txt out.txt\n\n", argn[1]);
+        printf("\nUsage: %s tipgoriva in.txt out.txt\n\n", argn[0]);
         exit(35);
     }
     goriva *glava;
