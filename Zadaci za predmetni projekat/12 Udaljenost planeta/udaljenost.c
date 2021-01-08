@@ -1,45 +1,59 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include <string.h>
 
-#define MAX_GRAD        2 + 1
-#define MAX_BIOSKOP    10 + 1
-#define MAX_FILM        8 + 1
-#define MAX_ZANR        9 + 1
+#define MAX_NAZIV 16 + 1
 
-typedef struct projekcija_st {
-    char grad[MAX_GRAD], bioskop[MAX_BIOSKOP], 
-         film[MAX_FILM], zanr[MAX_ZANR];
-    double cena;
-    struct projekcija_st *levi, *desni;
-} PROJEKCIJA;
+typedef struct planeta_st {
+    char naziv[MAX_NAZIV];
+    int x, y, z;
+    struct planeta_st *sledeci;
+} PLANETA;
 
-void init_tree(PROJEKCIJA **);
-void add_to_tree(PROJEKCIJA **, PROJEKCIJA *);
-PROJEKCIJA *create_item(const char *, const char *, const char *, const char *, const double);
-void print_tree(FILE *, PROJEKCIJA *);
-void destroy_tree(PROJEKCIJA **);
+typedef struct razdaljine_st {
+    PLANETA *p;
+    double udaljenost;
+    struct razdaljine_st *sledeci;
+} RAZDALJINA;
+
+void init_list(PLANETA **);
+void add_to_list(PLANETA **, PLANETA *);
+PLANETA *create_item(const char *, const int, const int, const int);
+void print_list(FILE *, PLANETA *);
+void print_item(FILE *, PLANETA *p);
+void destroy_list(PLANETA **);
+
+void i_list(RAZDALJINA **);
+void a_list(RAZDALJINA **, RAZDALJINA *);
+void p_list(RAZDALJINA *);
+RAZDALJINA *c_item(const double, PLANETA *);
+void d_list(RAZDALJINA **);
 
 FILE *otvori_datoteku(char *, char *);
-void load_data(FILE *, PROJEKCIJA **);
-void povoljne_projekcije(FILE *, PROJEKCIJA *, char *, char *);
+void load_data(FILE *, PLANETA **);
+void max_udaljenost(FILE *, PLANETA *, RAZDALJINA **r);
+double calc_distance(PLANETA *, PLANETA *);
 
 int main(int argc, char **args)
 {
-    if(argc != 5)
+    if(argc != 3)
     {
-        printf("\nUsage: %s grad zanr in.txt out.txt\n\n", args[1]);
+        printf("\nUsage: %s in.txt out.txt\n\n", args[1]);
         exit(35);
     }
-    PROJEKCIJA *koren;
-    FILE *ulazna = otvori_datoteku(args[3], "r");
-    FILE *izlazna = otvori_datoteku(args[4], "w");
+    PLANETA *glava;
+    RAZDALJINA *r;
+    FILE *ulazna = otvori_datoteku(args[1], "r");
+    FILE *izlazna = otvori_datoteku(args[2], "w");
 
-    init_tree(&koren);
-    load_data(ulazna, &koren);
-    print_tree(izlazna, koren);
-    povoljne_projekcije(izlazna, koren, args[1], args[2]);
-    destroy_tree(&koren);
+    init_list(&glava);
+    i_list(&r);
+    load_data(ulazna, &glava);
+    max_udaljenost(izlazna, glava, &r);
+    p_list(r);
+    destroy_list(&glava);
+    d_list(&r);
 
     fclose(ulazna);
     fclose(izlazna);
@@ -47,61 +61,107 @@ int main(int argc, char **args)
     return 0;
 }
 
-void init_tree(PROJEKCIJA **koren)
+void init_list(PLANETA **glava)
 {
-    *koren = NULL;
+    *glava = NULL;
 }
 
-void add_to_tree(PROJEKCIJA **koren, PROJEKCIJA *novi)
+void add_to_list(PLANETA **glava, PLANETA *novi)
 {
-   if(*koren == NULL) {
-       *koren = novi;
+   if(*glava == NULL) {
+       *glava = novi;
        return;
    }
-   else if(novi -> cena > (*koren) -> cena)
-        add_to_tree(&(*koren) -> levi, novi);
-   else
-        add_to_tree(&(*koren) -> desni, novi);
+    add_to_list(&(*glava) -> sledeci, novi);
 }
 
-PROJEKCIJA *create_item(const char *grad, const char *bioskop, const char *film, const char *zanr, const double cena)
+PLANETA *create_item(const char *naziv, const int x, const int y, const int z)
 {
-    PROJEKCIJA *tmp = malloc(sizeof(PROJEKCIJA));
+    PLANETA *tmp = malloc(sizeof(PLANETA));
     if(tmp == NULL)
     {
-        printf("\nNo memory for new item in tree!\n\n");
+        printf("\nNo memory for new item in list!\n\n");
         exit(42);
     }
-    strcpy(tmp -> grad, grad); 
-    strcpy(tmp -> bioskop, bioskop);
-    strcpy(tmp -> film, film);
-    strcpy(tmp -> zanr, zanr);
-    tmp -> cena = cena;
-    tmp -> levi = NULL;
-    tmp -> desni = NULL;
+    strcpy(tmp -> naziv, naziv); 
+    tmp -> x = x;
+    tmp -> y = y;
+    tmp -> z = z;
+    tmp -> sledeci = NULL;
 
     return tmp;
 }
 
-void print_tree(FILE *out, PROJEKCIJA *koren)
+void print_list(FILE *out, PLANETA *glava)
 {   
-    if(koren == NULL)
+    if(glava == NULL)
         return;
 
-    print_tree(out, koren -> desni);
-    fprintf(out, "%2s %-10s %-8s %-9s %6.2lf\n", koren -> grad, koren -> bioskop, koren -> film, koren -> zanr, koren -> cena);
-    print_tree(out, koren -> levi);
+    fprintf(out, "%s %d %d %d\n", glava -> naziv, glava -> x, glava -> y, glava -> z);
+    print_list(out, glava -> sledeci);
 }
 
-void destroy_tree(PROJEKCIJA **koren)
+void print_item(FILE *out, PLANETA *p)
 {
-    if(*koren != NULL)
+    fprintf(out, "%s %d %d %d\n", p -> naziv, p -> x, p -> y, p -> z);
+}
+
+void destroy_list(PLANETA **glava)
+{
+    if(*glava != NULL)
     {
-        destroy_tree(&((*koren) -> levi));
-        destroy_tree(&((*koren) -> desni));
-        free(*koren);
-        *koren = NULL;
+        destroy_list(&((*glava) -> sledeci));
+        free(*glava);
+        *glava = NULL;
     }
+}
+
+void i_list(RAZDALJINA **glava)
+{
+    *glava = NULL;
+}
+
+void a_list(RAZDALJINA **glava, RAZDALJINA *novi)
+{
+   if(*glava == NULL) {
+       *glava = novi;
+       return;
+   }
+    a_list(&(*glava) -> sledeci, novi);
+}
+
+RAZDALJINA *c_item(const double razdaljina, PLANETA *g)
+{
+    RAZDALJINA *tmp = malloc(sizeof(RAZDALJINA));
+    if(tmp == NULL)
+    {
+        printf("\nNo memory for new item in list!\n\n");
+        exit(42);
+    }
+    tmp -> p = g;
+    tmp -> udaljenost = razdaljina;
+    tmp -> sledeci = NULL;
+
+    return tmp;
+}
+
+void d_list(RAZDALJINA **glava)
+{
+    if(*glava != NULL)
+    {
+        d_list(&((*glava) -> sledeci));
+        free(*glava);
+        *glava = NULL;
+    }
+}
+
+void p_list(RAZDALJINA *glava)
+{   
+    if(glava == NULL)
+        return;
+
+    printf("%s %3.2lf\n", glava -> p -> naziv, glava -> udaljenost);
+    p_list(glava -> sledeci);
 }
 
 FILE *otvori_datoteku(char *name, char *mode)
@@ -115,32 +175,39 @@ FILE *otvori_datoteku(char *name, char *mode)
     return f;
 }
 
-void load_data(FILE *in, PROJEKCIJA **koren)
+void load_data(FILE *in, PLANETA **glava)
 {
-    PROJEKCIJA *tmp = malloc(sizeof(PROJEKCIJA));
-    while(fscanf(in, "%s %s %s %s %lf\n", tmp -> grad, tmp -> bioskop, tmp -> film, tmp -> zanr, &tmp -> cena) != EOF)
+    PLANETA *tmp = malloc(sizeof(PLANETA));
+    while(fscanf(in, "%s %d %d %d\n", tmp -> naziv, &tmp -> x, &tmp -> y, &tmp -> z) != EOF)
     {
-        PROJEKCIJA *novi = create_item(tmp -> grad, tmp -> bioskop, tmp -> film, tmp -> zanr, tmp -> cena);
-        add_to_tree(koren, novi);
+        PLANETA *novi = create_item(tmp -> naziv, tmp -> x, tmp -> y, tmp -> z);
+        add_to_list(glava, novi);
     }
 }
 
-void povoljne_projekcije(FILE *out, PROJEKCIJA *g, char *grad, char *zanr)
+void max_udaljenost(FILE *out, PLANETA *glava, RAZDALJINA **d)
 {
-    PROJEKCIJA *r = NULL;
-    while(g != NULL) {
-        if(strcmp(g -> grad, grad) == 0 && strcmp(g -> zanr, zanr) == 0) {
-            if(r == NULL)
-                r = g;
-            if(g -> cena < r -> cena)
-                r = g;
-        }
-        g = g -> desni;
-    }
+    PLANETA *p1, *p2;
+    p1 = glava;
+    p2 = glava -> sledeci;
 
-    if(r == NULL)
-        fprintf(out, "\nNiko ne projektuje %s filmove u %s!", zanr, grad);
-    else
-        fprintf(out, "\nNajpovoljnija projekcija za %s filmove u %s je:\n%-9s %6.2lf\n", 
-               zanr, grad, r -> film, r -> cena);
+    PLANETA *a;
+    PLANETA *b;
+    for(a = glava; a != NULL; a = a -> sledeci) {
+        for(b = a -> sledeci; b != NULL; b = b -> sledeci) {
+            if (calc_distance(a, b) > calc_distance(p1, p2)) {
+                p1 = a;
+                p2 = b;
+            }
+        }
+    }
+    print_item(out, p1);
+    print_item(out, p2);
+    fprintf(out, "%.2f\n", calc_distance(p1, p2));
+
+}
+
+double calc_distance(PLANETA *p1, PLANETA *p2)
+{
+    return sqrt( pow(p1 -> x - p2 -> x, 2) + pow(p1 -> y - p2 -> y, 2) + pow(p1 -> z - p2 -> z, 2));
 }
