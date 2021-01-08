@@ -27,6 +27,7 @@ void receive_data(ELEMENT *, ELEMENT **);
 
 // Additional functions per exercise
 void print_e_custom(FILE *, ELEMENT *);
+void find_e(FILE *, ELEMENT *, char *);
 
 int main(int argn, char **args)
 {
@@ -42,6 +43,7 @@ int main(int argn, char **args)
     head_e(&e); 
     read_f(in, &e);
     print_e_custom(out, e);
+    find_e(out, e, args[1]);
     delete_e(&e);
 
     fclose(in);
@@ -133,4 +135,26 @@ void print_e_custom(FILE *out, ELEMENT *e)
         return;
     fprintf(out, "%-2s %3u %s\n", e -> simbol, e -> atomska_t, e -> vrsta);
     print_e_custom(out, e -> s);
+}
+
+void find_e(FILE *out, ELEMENT *e, char *criteria)
+{
+    ELEMENT *c = NULL;
+    while(e != NULL) {
+        if(strcmp(e -> vrsta, criteria) == 0) {
+            if(c == NULL)
+                c = e;
+            if(e -> atomska_t > c -> atomska_t)
+                c = e;
+        }
+        e = e -> s;
+    }
+    if(c == NULL) {
+        fprintf(out, "\nU uzorku nije pronađen nijedan %s", criteria);
+        return;
+    }
+    else {
+        fprintf(out, "\nNajteži metal je %s (%s), atomska težina %3u", c -> ime, c -> simbol, c -> atomska_t);
+        return;
+    }
 }
