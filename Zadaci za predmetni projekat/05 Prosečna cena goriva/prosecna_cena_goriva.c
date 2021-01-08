@@ -20,21 +20,23 @@ void destroy_list(goriva **);
 
 FILE *otvori_datoteku(char *, char *);
 void load_data(FILE *, goriva **);
+void avg_gorivo(FILE *, goriva *, char *);
 
-int main(int argc, char **argn)
+int main(int argc, char **args)
 {
     if(argc != 4)
     {
-        printf("\nUsage: %s tipgoriva in.txt out.txt\n\n", argn[0]);
+        printf("\nUsage: %s tipgoriva in.txt out.txt\n\n", args[1]);
         exit(35);
     }
     goriva *glava;
-    FILE *ulazna = otvori_datoteku(argn[2], "r");
-    FILE *izlazna = otvori_datoteku(argn[3], "w");
+    FILE *ulazna = otvori_datoteku(args[2], "r");
+    FILE *izlazna = otvori_datoteku(args[3], "w");
 
     init_list(&glava);
     load_data(ulazna, &glava);
     print_list(izlazna, glava);
+    avg_gorivo(izlazna, glava, args[1]);
     destroy_list(&glava);
 
     fclose(ulazna);
@@ -115,5 +117,26 @@ void load_data(FILE *in, goriva **glava)
     {
         goriva *novi = create_item(tmp -> skrOznakaGrada, tmp -> tipGoriva, (*tmp).cena);
         add_to_list(glava, novi);
+    }
+}
+
+void avg_gorivo(FILE *out, goriva *g, char *criteria)
+{
+    int br = 0; 
+    double suma = 0.0;
+    while(g != NULL) {
+        if(strcmp(g -> tipGoriva, criteria) == 0) {
+            suma += g -> cena;
+            br++;
+        }
+        g = g -> sledeci;
+    }
+    if(br == 0) {
+        fprintf(out, "\nNema %sa", criteria);
+        return;
+    }
+    else {
+        fprintf(out, "\nAVG = %6.2lf", suma / br);
+        return;
     }
 }
