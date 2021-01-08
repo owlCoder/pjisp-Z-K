@@ -50,21 +50,11 @@ void init_list(goriva **glava)
 
 void add_to_list(goriva **glava, goriva *novi)
 {
-   struct gorivo_st* trenutni; 
-
-    if (*glava == NULL || (*glava) -> cena >= novi -> cena) { 
-        novi -> sledeci = *glava; 
-        *glava = novi; 
-    } 
-    else { 
-        trenutni = *glava; 
-        while (trenutni -> sledeci != NULL 
-               && trenutni -> sledeci -> cena < novi -> cena) { 
-            trenutni  = trenutni -> sledeci; 
-        } 
-        novi -> sledeci = trenutni -> sledeci; // prevezivanje na 
-        trenutni -> sledeci = novi; 
-    } 
+   if(*glava == NULL) {
+       *glava = novi;
+       return;
+   }
+   add_to_list(&(*glava) -> sledeci, novi);
 }
 
 goriva *create_item(const char *grad, const char *tipGoriva, const double cena)
