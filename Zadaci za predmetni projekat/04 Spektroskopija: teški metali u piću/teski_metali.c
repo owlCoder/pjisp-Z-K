@@ -13,7 +13,10 @@ typedef struct element_st {
     struct element_st *s;
 } ELEMENT;
 
+// Functions for work with LIST
 void head_e(ELEMENT **);
+ELEMENT *create_e(const char *, const char *, const int, const char *);
+// Generic files functions
 
 int main(int argn, char **args)
 {
@@ -24,11 +27,27 @@ int main(int argn, char **args)
     ELEMENT *e;
 
     head_e(&e);
-    
+
     return 0;
 }
 
 void head_e(ELEMENT **e)
 {
     *e = NULL;
+}
+
+ELEMENT *create_e(const char *s, const char *i, const int a, const char *v)
+{
+    ELEMENT *new = (ELEMENT *) malloc(sizeof(ELEMENT));
+    if(new == NULL) {
+        puts("NO RAM!");
+        exit(45);
+    }
+    strcpy(new -> simbol, s);
+    strcpy(new -> ime, i);
+    new -> atomska_t = a;
+    strcpy(new -> vrsta, v);
+    new -> s = NULL;
+
+    return new;
 }
