@@ -22,6 +22,8 @@ void delete_e(ELEMENT **);
 
 // Generic files functions
 FILE *safe_f(char *, char *);
+void read_f(FILE *);
+void receive_data(const char *, const char *, const int, const char *);
 
 int main(int argn, char **args)
 {
