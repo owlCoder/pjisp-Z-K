@@ -22,8 +22,8 @@ void delete_e(ELEMENT **);
 
 // Generic files functions
 FILE *safe_f(char *, char *);
-void read_f(FILE *);
-void receive_data(ELEMENT *);
+void read_f(FILE *, ELEMENT **);
+void receive_data(ELEMENT *, ELEMENT **);
 
 int main(int argn, char **args)
 {
@@ -37,7 +37,7 @@ int main(int argn, char **args)
     FILE *out = safe_f(args[3], "w");
 
     head_e(&e); 
-    // add_e(&e, create_e("GG", "FFF", 32, "FKFD")); 
+    read_f(in, &e);
     delete_e(&e);
 
     fclose(in);
@@ -103,14 +103,22 @@ FILE *safe_f(char *n, char *m)
     return f;
 }
 
-void read_f(FILE *f) 
+void read_f(FILE *f, ELEMENT **e) 
 {
     ELEMENT *tmp = (ELEMENT *) malloc(sizeof(ELEMENT));
 
     while(fscanf(f, "%s %s %d %s", tmp -> simbol,    tmp -> ime,
                                 &tmp -> atomska_t, tmp -> vrsta) != EOF)
-        receive_data(tmp);
+        receive_data(tmp, e);
 
     free(tmp);
     tmp = NULL;
+}
+
+void receive_data(ELEMENT *n, ELEMENT **e)
+{
+    ELEMENT *new = (ELEMENT *) malloc(sizeof(ELEMENT));
+    new = create_e(n -> simbol,    n -> ime,
+                      n -> atomska_t, n -> vrsta);
+    add_e(e, new);
 }
