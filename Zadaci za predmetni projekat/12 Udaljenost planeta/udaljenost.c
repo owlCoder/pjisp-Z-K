@@ -11,28 +11,15 @@ typedef struct planeta_st {
     struct planeta_st *sledeci;
 } PLANETA;
 
-typedef struct razdaljine_st {
-    PLANETA *p;
-    double udaljenost;
-    struct razdaljine_st *sledeci;
-} RAZDALJINA;
-
 void init_list(PLANETA **);
 void add_to_list(PLANETA **, PLANETA *);
 PLANETA *create_item(const char *, const int, const int, const int);
-void print_list(FILE *, PLANETA *);
 void print_item(FILE *, PLANETA *p);
 void destroy_list(PLANETA **);
 
-void i_list(RAZDALJINA **);
-void a_list(RAZDALJINA **, RAZDALJINA *);
-void p_list(RAZDALJINA *);
-RAZDALJINA *c_item(const double, PLANETA *);
-void d_list(RAZDALJINA **);
-
 FILE *otvori_datoteku(char *, char *);
 void load_data(FILE *, PLANETA **);
-void max_udaljenost(FILE *, PLANETA *, RAZDALJINA **r);
+void max_udaljenost(FILE *, PLANETA *);
 double calc_distance(PLANETA *, PLANETA *);
 
 int main(int argc, char **args)
@@ -43,17 +30,13 @@ int main(int argc, char **args)
         exit(35);
     }
     PLANETA *glava;
-    RAZDALJINA *r;
     FILE *ulazna = otvori_datoteku(args[1], "r");
     FILE *izlazna = otvori_datoteku(args[2], "w");
 
     init_list(&glava);
-    i_list(&r);
     load_data(ulazna, &glava);
-    max_udaljenost(izlazna, glava, &r);
-    p_list(r);
+    max_udaljenost(izlazna, glava);
     destroy_list(&glava);
-    d_list(&r);
 
     fclose(ulazna);
     fclose(izlazna);
@@ -92,15 +75,6 @@ PLANETA *create_item(const char *naziv, const int x, const int y, const int z)
     return tmp;
 }
 
-void print_list(FILE *out, PLANETA *glava)
-{   
-    if(glava == NULL)
-        return;
-
-    fprintf(out, "%s %d %d %d\n", glava -> naziv, glava -> x, glava -> y, glava -> z);
-    print_list(out, glava -> sledeci);
-}
-
 void print_item(FILE *out, PLANETA *p)
 {
     fprintf(out, "%s %d %d %d\n", p -> naziv, p -> x, p -> y, p -> z);
@@ -114,54 +88,6 @@ void destroy_list(PLANETA **glava)
         free(*glava);
         *glava = NULL;
     }
-}
-
-void i_list(RAZDALJINA **glava)
-{
-    *glava = NULL;
-}
-
-void a_list(RAZDALJINA **glava, RAZDALJINA *novi)
-{
-   if(*glava == NULL) {
-       *glava = novi;
-       return;
-   }
-    a_list(&(*glava) -> sledeci, novi);
-}
-
-RAZDALJINA *c_item(const double razdaljina, PLANETA *g)
-{
-    RAZDALJINA *tmp = malloc(sizeof(RAZDALJINA));
-    if(tmp == NULL)
-    {
-        printf("\nNo memory for new item in list!\n\n");
-        exit(42);
-    }
-    tmp -> p = g;
-    tmp -> udaljenost = razdaljina;
-    tmp -> sledeci = NULL;
-
-    return tmp;
-}
-
-void d_list(RAZDALJINA **glava)
-{
-    if(*glava != NULL)
-    {
-        d_list(&((*glava) -> sledeci));
-        free(*glava);
-        *glava = NULL;
-    }
-}
-
-void p_list(RAZDALJINA *glava)
-{   
-    if(glava == NULL)
-        return;
-
-    printf("%s %3.2lf\n", glava -> p -> naziv, glava -> udaljenost);
-    p_list(glava -> sledeci);
 }
 
 FILE *otvori_datoteku(char *name, char *mode)
@@ -185,7 +111,7 @@ void load_data(FILE *in, PLANETA **glava)
     }
 }
 
-void max_udaljenost(FILE *out, PLANETA *glava, RAZDALJINA **d)
+void max_udaljenost(FILE *out, PLANETA *glava)
 {
     PLANETA *p1, *p2;
     p1 = glava;
