@@ -55,8 +55,8 @@ void add_to_list(PIZZE **glava, PIZZE *novi)
    if(*glava == NULL)
        *glava = novi;
     else {
-        PIZZE *tmp = (*glava) -> sledeci;
-        (*glava) -> sledeci = novi;
+        PIZZE *tmp = *glava;
+        *glava = novi;
         novi -> sledeci = tmp;
     }
 }
