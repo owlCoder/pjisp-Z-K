@@ -57,13 +57,13 @@ void add_to_list(PIZZE **glava, PIZZE *novi)
        *glava = novi;
        return;
    }
+   else if( ((*glava) -> sledeci) != NULL && (*glava) -> sledeci -> cena < novi -> cena) {
+       add_to_list(&(*glava) -> sledeci, novi);
+       return;
+   }
    else {
-       PIZZE *trenutni = *glava;
-       while(trenutni -> sledeci != NULL && trenutni -> sledeci -> cena < novi -> cena) {
-            trenutni = trenutni -> sledeci;
-       }
-       novi -> sledeci = trenutni -> sledeci;
-       trenutni -> sledeci = novi;
+       novi -> sledeci = (*glava) -> sledeci;
+       (*glava) -> sledeci = novi;
    }
 }
 
