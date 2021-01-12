@@ -52,11 +52,19 @@ void init_list(PIZZE **glava)
 
 void add_to_list(PIZZE **glava, PIZZE *novi)
 {
-   if(*glava == NULL) {
+   if(*glava == NULL || (*glava) -> cena >= novi -> cena) {
+       novi -> sledeci = *glava;
        *glava = novi;
        return;
    }
-   add_to_list(&(*glava) -> sledeci, novi);
+   else {
+       PIZZE *trenutni = *glava;
+       while(trenutni -> sledeci != NULL && trenutni -> sledeci -> cena < novi -> cena) {
+            trenutni = trenutni -> sledeci;
+       }
+       novi -> sledeci = trenutni -> sledeci;
+       trenutni -> sledeci = novi;
+   }
 }
 
 PIZZE *create_item(const unsigned cena, const char *drzava, const char *grad, const char *naziv)
