@@ -20,7 +20,6 @@ typedef struct vozilo_st {
 void init_list(VOZILA **);
 void add_to_list(VOZILA **, VOZILA *);
 VOZILA *create_item(const char *, const char *, const char *, const double, const unsigned, const double);
-void print_list(FILE *, VOZILA *);
 void destroy_list(VOZILA **);
 
 FILE *otvori_datoteku(char *, char *, int);
@@ -95,20 +94,6 @@ VOZILA *create_item(const char *r, const char *m, const char *v,
     tmp -> sledeci = NULL;
 
     return tmp;
-}
-
-void print_list(FILE *out, VOZILA *glava)
-{   
-    if(glava == NULL)
-    {
-        printf("\nLISTA JE PRAZNA!\n");
-        exit(33);
-    }
-    while(glava != NULL)
-    {
-        fprintf(out, "%-8s %u %-8s %.2lf %-8s\n", glava -> marka, glava -> godiste, glava -> vrsta, glava -> cena, glava -> registracija);
-        glava = glava -> sledeci;
-    }
 }
 
 void destroy_list(VOZILA **glava)
