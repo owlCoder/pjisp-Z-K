@@ -1,0 +1,9 @@
+NS107BS renault teretno 850 2000 22999
+BG123SF toyota putnicko 580 2003 17500
+KG08ET opel teretno 1100 2011 19450
+NI045KM bmw putnicko 790 2015 16349
+NS308VR peugeot putnicko 630 2003 15920
+KG873PS renault putnicko 740 2011 19879
+KV464LB bmw teretno 960 2000 21300
+KG447HU opel putnicko 610 2011 14249
+NS691NW toyota teretno 1170 2015 20734
