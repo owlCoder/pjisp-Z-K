@@ -1,0 +1,18 @@
+Iz ulazne datoteke obroci.txt ucitati elemente u jednostruko spregnutu listu obrok_st koja ima sledeca polja:
+
+	- Naziv obroka (do 20 karaktera)
+	- Vrsta obroka (do 20 karaktera)
+	- Gramaza (unsigned int)
+	- Kalorije (na 100 grama) (unsigned int)
+
+Naravno, struktura ima odgovarajuca polja za formiranje spregnute liste(struct obrok_st *next)
+
+Zatim na osnovu zadate vrste, na standardni izlaz ispisati elemente koji za vrstu obroka imaju zadatu vrstu, u formatu:
+
+	- Naziv Obroka
+	- Gramaza
+	- Kalorije
+
+Nakon toga ispisati koji od tih obroka ima najmanju kolicinu kalorija( (Gramaza * Kalorije) / 100)
+
+primer poziva: ./a.out dezert obroci.txt
