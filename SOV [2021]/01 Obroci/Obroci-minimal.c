@@ -13,7 +13,6 @@ typedef struct obrok_st
 	struct obrok_st *sledeci;
 } OBROCI;
 
-
 void init_list(OBROCI **glava)
 {
 	*glava = NULL;
