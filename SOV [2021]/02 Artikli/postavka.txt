@@ -1,1 +1,19 @@
+Iz zadate ulazne datoteka učitati podatke u jednostruko spregnutu listu, gde struktura artikli_st sadrži
+sledeća polja:
 
+    - serijski_broj(ceo broj),
+    - naziv(maksimalno 13 znakova),
+    - jedinicna_cena(realan broj),
+    - broj(pozitivan ceo broj),
+    - ukupna_cena(realan broj),
+  gde se ukupna_cena racuna kao jedinicna_cena * broj.
+  
+Naravno, struktura artikli_st sadrži i polja potrebna za pravilno formiranje jednostruko spregnute liste.
+Izvrsiti sortiranje u rastucem redosledu na osnovu serijskog broja.
+
+Na osnovu zadatog budzeta ispisati na standardan izlaz artikle koji mogu biti kupljeni iz zadatog budzeta
+i broj kupljenih artikala. 
+
+Ukoliko se iz budzeta ne moze kupiti nijedan artikal, ispisati poruku na
+standardan izlaz. Ukoliko je uneseni budzet manji od nule ispisati poruku da budzet mora biti pozitivan
+broj.
