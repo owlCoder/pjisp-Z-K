@@ -6,10 +6,10 @@
 
 typedef struct artikli_st 
 {
-    int serijskiBroj;
+	int serijskiBroj;
 	char naziv[MAX_NAZIV];
 	double jedCena;
-    unsigned komada;
+	unsigned komada;
 	double ukupnaCena;
 	struct artikli_st *sledeci;
 } ARTIKLI;
