@@ -1,0 +1,6 @@
+SlatkoJagoda dezert     100 252
+Djevrek      pecivo      50 120	
+MusliKranc   zitarice   250 350	
+Hleb         pecivo     500 100	
+Sladoled     dezert      50 356	
+PitaMeso     pecivo     250 840	
