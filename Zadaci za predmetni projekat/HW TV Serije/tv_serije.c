@@ -6,9 +6,9 @@
 #define MAX_POREKLO      3 + 1
 
 typedef struct serija_st {
-    char naziv[MAX_STRING], brEpizoda[MAX_STRING], 
+    char naziv[MAX_STRING], 
          madeIn[MAX_POREKLO], zanr[MAX_STRING];
-    int godinaPremijere;
+    int godinaPremijere, brEpizoda;
     double avgTrajanje;
     struct serija_st *sledeci;
 } SERIJE;
@@ -16,7 +16,7 @@ typedef struct serija_st {
 unsigned main__test_case(const int, char **);
 
 void init_list(SERIJE **);
-SERIJE *create_item(const char *, const char *, const int, const double, const char *, const char *);
+SERIJE *create_item(const char *, const int, const int, const double, const char *, const char *);
 void add_to_list(SERIJE **, SERIJE *);
 void load_data(FILE *, SERIJE **);
 FILE *fopen_dat(char *, char *);
@@ -63,7 +63,7 @@ unsigned main__test_case(const int argn, char **args)
 
 void init_list(SERIJE **g) { *g = NULL; }
 
-SERIJE *create_item(const char *n, const char *be, const int g, 
+SERIJE *create_item(const char *n, const int be, const int g, 
                     const double t, const char *scc, const char *z)
 {
     SERIJE *new = (SERIJE *) malloc(sizeof(SERIJE));
@@ -75,7 +75,7 @@ SERIJE *create_item(const char *n, const char *be, const int g,
     }
 
     strcpy(new -> naziv, n);
-    strcpy(new -> brEpizoda, be);
+    new -> brEpizoda = be;
     new -> godinaPremijere = g;
     new -> avgTrajanje = t;
     strcpy(new -> madeIn, scc);
@@ -99,7 +99,7 @@ void add_to_list(SERIJE **g, SERIJE *new)
 void load_data(FILE *in, SERIJE **g)
 {
     SERIJE load;
-    while(fscanf(in, "%s %s %d %lf %s %s", load.naziv, load.brEpizoda, &load.godinaPremijere, 
+    while(fscanf(in, "%s %d %d %lf %s %s", load.naziv, &load.brEpizoda, &load.godinaPremijere, 
                                           &load.avgTrajanje, load.madeIn, load.zanr) != EOF) {
         add_to_list(g, create_item(load.naziv,       load.brEpizoda,   load.godinaPremijere, 
                                    load.avgTrajanje, load.madeIn,      load.zanr));
@@ -125,7 +125,7 @@ void item_print(FILE *out, SERIJE *g)
       exit(7);
     }
 
-    fprintf(out, "%-10s %-8s %d %5.2lf %-3s %-10s\n", g -> naziv,           g -> brEpizoda,   
+    fprintf(out, "%-10s %3d %d %5.2lf %-3s %-10s\n", g -> naziv,           g -> brEpizoda,   
                                                       g -> godinaPremijere, g -> avgTrajanje,
                                                       g -> madeIn,          g -> zanr);
 }
@@ -137,7 +137,7 @@ void avg_trajanje_state_criteria(FILE *out, SERIJE *g, const char *madeIn)
 
     while(g != NULL) {
         if((strcmp(g -> madeIn, madeIn) == 0)) {
-            suma += atof((g -> brEpizoda));
+            suma += g -> brEpizoda;
             counter++;
         }
         g = g -> sledeci;
@@ -167,11 +167,11 @@ void max_duzina_trajanja(SERIJE *g)
              tmp = g;
             *max = atof(tmp -> brEpizoda) * (double) (tmp -> avgTrajanje);
         }
-        *chk = atof(g -> brEpizoda) * (double) (g -> avgTrajanje);
+        *chk = g -> brEpizoda * (double) (g -> avgTrajanje);
 
         if(*chk > *max) {
             tmp = g;
-            *max = atof(tmp -> brEpizoda) * (double) (tmp -> avgTrajanje);
+            *max = tmp -> brEpizoda * (double) (tmp -> avgTrajanje);
         }
         g = g -> sledeci;
     }
