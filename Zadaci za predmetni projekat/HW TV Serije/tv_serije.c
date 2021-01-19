@@ -165,7 +165,7 @@ void max_duzina_trajanja(SERIJE *g)
     {
         if(tmp == NULL) {
              tmp = g;
-            *max = atof(tmp -> brEpizoda) * (double) (tmp -> avgTrajanje);
+            *max = tmp -> brEpizoda * (double) (tmp -> avgTrajanje);
         }
         *chk = g -> brEpizoda * (double) (g -> avgTrajanje);
 
