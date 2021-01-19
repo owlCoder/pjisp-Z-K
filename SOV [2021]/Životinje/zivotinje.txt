@@ -1,0 +1,4 @@
+Impala 150.0 160
+Konj 632 21
+Zaba 32 1200
+Panda 120 36
